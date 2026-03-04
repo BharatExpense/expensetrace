@@ -26,6 +26,7 @@ import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { useProjectContext } from '@/contexts/ProjectContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { toast } from '@/hooks/use-toast';
+import { useNotificationSound } from '@/hooks/useNotificationSound';
 import { format } from 'date-fns';
 
 const Index = () => {
@@ -51,10 +52,12 @@ const Index = () => {
 
   const { preferences, updatePreferences } = useUserPreferences();
   const { formatAmount } = useCurrency();
+  const { playExpenseAdded, playBudgetExceeded } = useNotificationSound();
 
   const handleAddExpense = async (expense: Parameters<typeof addExpense>[0]) => {
     const result = await addExpense(expense);
     if (result) {
+      playExpenseAdded();
       toast({
         title: 'Expense added!',
         description: `${formatAmount(expense.amount)} added to ${expense.category}`,
@@ -70,6 +73,7 @@ const Index = () => {
         const percentage = (newTotal / budget.limitAmount) * 100;
 
         if (percentage >= 100) {
+          playBudgetExceeded();
           toast({
             title: '⚠️ Budget exceeded!',
             description: `You've exceeded your ${expense.category} budget.`,

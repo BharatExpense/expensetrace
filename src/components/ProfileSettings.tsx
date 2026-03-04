@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { User, Mail, DollarSign, Wallet, Save, Loader2, Settings, Lock, Eye, EyeOff } from 'lucide-react';
+import { User, Mail, DollarSign, Wallet, Save, Loader2, Settings, Lock, Eye, EyeOff, Volume2 } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { useNotificationSound } from '@/hooks/useNotificationSound';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -28,6 +30,8 @@ import { supabase } from '@/integrations/supabase/client';
 export const ProfileSettings = () => {
   const { user } = useAuth();
   const { preferences, updatePreferences, isLoading: prefsLoading } = useUserPreferences();
+  const { isSoundEnabled, setSoundEnabled, playExpenseAdded } = useNotificationSound();
+  const [soundOn, setSoundOn] = useState(true);
   
   const [open, setOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -50,6 +54,7 @@ export const ProfileSettings = () => {
   useEffect(() => {
     if (open && preferences) {
       loadCurrentValues();
+      setSoundOn(isSoundEnabled());
     }
     // Reset password fields when dialog closes
     if (!open) {
@@ -304,6 +309,25 @@ export const ProfileSettings = () => {
               <p className="text-xs text-muted-foreground">
                 Optional: Set an overall monthly spending limit
               </p>
+            </div>
+
+            {/* Notification Sound Toggle */}
+            <div className="flex items-center justify-between rounded-lg border border-border p-3">
+              <div className="flex items-center gap-3">
+                <Volume2 className="h-4 w-4 text-muted-foreground" />
+                <div>
+                  <p className="text-sm font-medium text-foreground">Notification Sounds</p>
+                  <p className="text-xs text-muted-foreground">Play sounds for expenses &amp; budget alerts</p>
+                </div>
+              </div>
+              <Switch
+                checked={soundOn}
+                onCheckedChange={(checked) => {
+                  setSoundOn(checked);
+                  setSoundEnabled(checked);
+                  if (checked) playExpenseAdded();
+                }}
+              />
             </div>
 
             {/* Save Profile Button */}
