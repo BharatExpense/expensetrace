@@ -54,6 +54,7 @@ export const ProfileSettings = () => {
   useEffect(() => {
     if (open && preferences) {
       loadCurrentValues();
+      setSoundOn(isSoundEnabled());
     }
     // Reset password fields when dialog closes
     if (!open) {
