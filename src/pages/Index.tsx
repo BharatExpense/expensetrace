@@ -26,6 +26,7 @@ import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { useProjectContext } from '@/contexts/ProjectContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { toast } from '@/hooks/use-toast';
+import { useNotificationSound } from '@/hooks/useNotificationSound';
 import { format } from 'date-fns';
 
 const Index = () => {
