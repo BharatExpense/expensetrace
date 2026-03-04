@@ -57,6 +57,7 @@ const Index = () => {
   const handleAddExpense = async (expense: Parameters<typeof addExpense>[0]) => {
     const result = await addExpense(expense);
     if (result) {
+      playExpenseAdded();
       toast({
         title: 'Expense added!',
         description: `${formatAmount(expense.amount)} added to ${expense.category}`,
