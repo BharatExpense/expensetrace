@@ -179,7 +179,7 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
               },
               {
                 name: 'David Chen',
-                review: 'Finally an expense tracker that doesn't feel overwhelming. The clean interface makes it easy to log expenses on the go.',
+                review: "Finally an expense tracker that doesn't feel overwhelming. The clean interface makes it easy to log expenses on the go.",
               },
               {
                 name: 'Emily Watson',
