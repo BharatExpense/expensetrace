@@ -73,6 +73,7 @@ const Index = () => {
         const percentage = (newTotal / budget.limitAmount) * 100;
 
         if (percentage >= 100) {
+          playBudgetExceeded();
           toast({
             title: '⚠️ Budget exceeded!',
             description: `You've exceeded your ${expense.category} budget.`,
