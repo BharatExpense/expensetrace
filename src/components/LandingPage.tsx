@@ -175,7 +175,7 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
               },
               {
                 name: 'Priya Sharma',
-                review: 'Simple, beautiful, and effective. I love the budget alerts — they keep me accountable without being annoying. Best expense app I've used.',
+                review: "Simple, beautiful, and effective. I love the budget alerts — they keep me accountable without being annoying. Best expense app I've used.",
               },
               {
                 name: 'David Chen',
