@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { User, Mail, DollarSign, Wallet, Save, Loader2, Settings, Lock, Eye, EyeOff } from 'lucide-react';
+import { User, Mail, DollarSign, Wallet, Save, Loader2, Settings, Lock, Eye, EyeOff, Volume2 } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { useNotificationSound } from '@/hooks/useNotificationSound';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
