@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, Shield, Wallet, Globe, TrendingUp } from 'lucide-react';
+import { ArrowRight, BarChart3, Shield, Wallet, Globe, TrendingUp, Star } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import heroIllustration from '@/assets/hero-illustration.png';
 import { Button } from '@/components/ui/button';
@@ -144,6 +144,67 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
                   <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                     {feature.description}
                   </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-16 sm:py-20 lg:py-24">
+        <div className="page-container">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-3 sm:mb-4 text-balance">
+              Loved by thousands of users
+            </h2>
+            <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto text-pretty">
+              See what our community says about managing their finances with ExpenseTrace.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
+            {[
+              {
+                name: 'Sarah Mitchell',
+                review: 'ExpenseTrace completely changed how I manage my money. The visual analytics helped me cut unnecessary spending by 30% in just two months!',
+              },
+              {
+                name: 'James Rodriguez',
+                review: 'The multi-currency support is a game changer for me as a freelancer working with international clients. Highly recommended!',
+              },
+              {
+                name: 'Priya Sharma',
+                review: "Simple, beautiful, and effective. I love the budget alerts — they keep me accountable without being annoying. Best expense app I've used.",
+              },
+              {
+                name: 'David Chen',
+                review: "Finally an expense tracker that doesn't feel overwhelming. The clean interface makes it easy to log expenses on the go.",
+              },
+              {
+                name: 'Emily Watson',
+                review: 'The category breakdowns and charts are incredibly insightful. I now have a clear picture of where every dollar goes.',
+              },
+              {
+                name: 'Omar Al-Rashid',
+                review: "I've tried many finance apps, but ExpenseTrace stands out with its privacy-first approach and seamless syncing across devices.",
+              },
+            ].map((testimonial, index) => (
+              <Card
+                key={testimonial.name}
+                className="glass-card-elevated hover-lift border-border/40 animate-fade-in-up"
+                style={{ animationDelay: `${index * 80}ms` }}
+              >
+                <CardContent className="p-5 sm:p-6 space-y-4">
+                  <div className="flex gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-primary text-primary" />
+                    ))}
+                  </div>
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed italic">
+                    "{testimonial.review}"
+                  </p>
+                  <p className="text-sm font-semibold text-foreground">{testimonial.name}</p>
                 </CardContent>
               </Card>
             ))}
