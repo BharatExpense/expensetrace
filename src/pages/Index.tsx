@@ -52,6 +52,7 @@ const Index = () => {
 
   const { preferences, updatePreferences } = useUserPreferences();
   const { formatAmount } = useCurrency();
+  const { playExpenseAdded, playBudgetExceeded } = useNotificationSound();
 
   const handleAddExpense = async (expense: Parameters<typeof addExpense>[0]) => {
     const result = await addExpense(expense);
