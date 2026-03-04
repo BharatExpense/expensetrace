@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, Shield, Wallet, Globe, TrendingUp } from 'lucide-react';
+import { ArrowRight, BarChart3, Shield, Wallet, Globe, TrendingUp, Star } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import heroIllustration from '@/assets/hero-illustration.png';
 import { Button } from '@/components/ui/button';
