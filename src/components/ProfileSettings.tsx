@@ -30,6 +30,8 @@ import { supabase } from '@/integrations/supabase/client';
 export const ProfileSettings = () => {
   const { user } = useAuth();
   const { preferences, updatePreferences, isLoading: prefsLoading } = useUserPreferences();
+  const { isSoundEnabled, setSoundEnabled, playExpenseAdded } = useNotificationSound();
+  const [soundOn, setSoundOn] = useState(true);
   
   const [open, setOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
