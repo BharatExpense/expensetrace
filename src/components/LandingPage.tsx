@@ -187,7 +187,7 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
               },
               {
                 name: 'Omar Al-Rashid',
-                review: 'I've tried many finance apps, but ExpenseTrace stands out with its privacy-first approach and seamless syncing across devices.',
+                review: "I've tried many finance apps, but ExpenseTrace stands out with its privacy-first approach and seamless syncing across devices.",
               },
             ].map((testimonial, index) => (
               <Card
