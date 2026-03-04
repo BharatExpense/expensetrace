@@ -311,6 +311,25 @@ export const ProfileSettings = () => {
               </p>
             </div>
 
+            {/* Notification Sound Toggle */}
+            <div className="flex items-center justify-between rounded-lg border border-border p-3">
+              <div className="flex items-center gap-3">
+                <Volume2 className="h-4 w-4 text-muted-foreground" />
+                <div>
+                  <p className="text-sm font-medium text-foreground">Notification Sounds</p>
+                  <p className="text-xs text-muted-foreground">Play sounds for expenses &amp; budget alerts</p>
+                </div>
+              </div>
+              <Switch
+                checked={soundOn}
+                onCheckedChange={(checked) => {
+                  setSoundOn(checked);
+                  setSoundEnabled(checked);
+                  if (checked) playExpenseAdded();
+                }}
+              />
+            </div>
+
             {/* Save Profile Button */}
             <Button 
               onClick={handleSave} 
