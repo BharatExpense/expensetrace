@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Receipt, LogOut } from 'lucide-react';
+import { Receipt, LogOut, CreditCard } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import { ProfileSettings } from '@/components/ProfileSettings';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,6 +19,7 @@ import { NotificationManager } from '@/components/NotificationManager';
 import { CurrencyConverter } from '@/components/CurrencyConverter';
 import { ProjectSelector } from '@/components/ProjectSelector';
 import { ProjectOnboarding } from '@/components/ProjectOnboarding';
+import { SmartInsights } from '@/components/SmartInsights';
 import { useAuth } from '@/hooks/useAuth';
 import { useExpensesDb } from '@/hooks/useExpensesDb';
 import { useBudgets } from '@/hooks/useBudgets';
