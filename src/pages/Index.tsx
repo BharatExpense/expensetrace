@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Receipt, LogOut } from 'lucide-react';
+import { Receipt, LogOut, CreditCard } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import { ProfileSettings } from '@/components/ProfileSettings';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,6 +19,7 @@ import { NotificationManager } from '@/components/NotificationManager';
 import { CurrencyConverter } from '@/components/CurrencyConverter';
 import { ProjectSelector } from '@/components/ProjectSelector';
 import { ProjectOnboarding } from '@/components/ProjectOnboarding';
+import { SmartInsights } from '@/components/SmartInsights';
 import { useAuth } from '@/hooks/useAuth';
 import { useExpensesDb } from '@/hooks/useExpensesDb';
 import { useBudgets } from '@/hooks/useBudgets';
@@ -247,7 +248,10 @@ const Index = () => {
           />
         </section>
 
-        {/* Tabs for different views */}
+        {/* Smart Insights */}
+        <section className="animate-fade-in-up" style={{ animationDelay: '75ms' }}>
+          <SmartInsights expenses={expenses} budgets={budgets} />
+        </section>
         <Tabs defaultValue="expenses" className="space-y-5 sm:space-y-6 lg:space-y-8">
           <TabsList className="grid w-full grid-cols-4 max-w-lg h-11 sm:h-12 p-1 bg-muted/50">
             <TabsTrigger value="expenses" className="text-xs sm:text-sm font-medium">Expenses</TabsTrigger>
