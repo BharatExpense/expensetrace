@@ -248,7 +248,10 @@ const Index = () => {
           />
         </section>
 
-        {/* Tabs for different views */}
+        {/* Smart Insights */}
+        <section className="animate-fade-in-up" style={{ animationDelay: '75ms' }}>
+          <SmartInsights expenses={expenses} budgets={budgets} />
+        </section>
         <Tabs defaultValue="expenses" className="space-y-5 sm:space-y-6 lg:space-y-8">
           <TabsList className="grid w-full grid-cols-4 max-w-lg h-11 sm:h-12 p-1 bg-muted/50">
             <TabsTrigger value="expenses" className="text-xs sm:text-sm font-medium">Expenses</TabsTrigger>
