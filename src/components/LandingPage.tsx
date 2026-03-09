@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, Shield, Wallet, Globe, TrendingUp, Star, Check, Zap, Eye, Target, AlertTriangle, Lightbulb, CreditCard, Users, FileText, Cloud } from 'lucide-react';
+import { ArrowRight, BarChart3, Shield, Wallet, Globe, TrendingUp, Star, Check, X, Zap, Eye, Target, AlertTriangle, Lightbulb, CreditCard, Users, FileText, Cloud } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import heroIllustration from '@/assets/hero-illustration.png';
 import { Button } from '@/components/ui/button';
@@ -25,6 +25,19 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
     { name: 'David Chen', role: 'Software Engineer', review: "Finally an expense tracker that doesn't feel overwhelming. The clean interface makes it easy to log expenses on the go." },
     { name: 'Emily Watson', role: 'Marketing Manager', review: 'The category breakdowns and charts are incredibly insightful. I now have a clear picture of where every dollar goes.' },
     { name: 'Omar Al-Rashid', role: 'Consultant', review: "ExpenseTrace stands out with its privacy-first approach and seamless syncing across devices." },
+  ];
+
+  const comparisonFeatures = [
+    { name: 'Monthly transactions', free: '50', pro: 'Unlimited' },
+    { name: 'Expense categories', free: '8', pro: 'Custom + 8' },
+    { name: 'Basic analytics', free: true, pro: true },
+    { name: 'Advanced charts & reports', free: false, pro: true },
+    { name: 'Export (CSV/PDF)', free: false, pro: true },
+    { name: 'Budget alerts', free: true, pro: true },
+    { name: 'Smart AI insights', free: false, pro: true },
+    { name: 'Cloud backup & sync', free: false, pro: true },
+    { name: 'Unlimited projects', free: false, pro: true },
+    { name: 'Priority support', free: false, pro: true },
   ];
 
   return (
@@ -187,7 +200,7 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
         </div>
       </section>
 
-      {/* Pricing Section */}
+      {/* Pricing with Comparison Table */}
       <section className="py-16 sm:py-20 lg:py-24" id="pricing">
         <div className="page-container">
           <div className="text-center mb-12 sm:mb-16">
@@ -199,7 +212,8 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+          {/* Plan Cards */}
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-12">
             {/* Free Plan */}
             <Card className="glass-card-elevated p-6 sm:p-8 space-y-6 relative">
               <div>
@@ -210,14 +224,6 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
                 <span className="text-4xl font-extrabold text-foreground">₹0</span>
                 <span className="text-muted-foreground">/month</span>
               </div>
-              <ul className="space-y-3">
-                {['50 transactions/month', 'Basic analytics', 'Category tracking', '1 project', 'Community support'].map((f) => (
-                  <li key={f} className="flex items-center gap-2.5 text-sm text-foreground">
-                    <Check className="h-4 w-4 text-primary flex-shrink-0" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
               <Button variant="outline" className="w-full font-semibold h-11" onClick={onGetStarted}>
                 Get Started
               </Button>
@@ -236,18 +242,49 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
                 <span className="text-4xl font-extrabold gradient-text">₹299</span>
                 <span className="text-muted-foreground">/month</span>
               </div>
-              <ul className="space-y-3">
-                {['Unlimited transactions', 'Advanced analytics & charts', 'Export reports (PDF/CSV)', 'Cloud backup & sync', 'Unlimited projects', 'Smart AI insights', 'Priority support'].map((f) => (
-                  <li key={f} className="flex items-center gap-2.5 text-sm text-foreground">
-                    <Check className="h-4 w-4 text-primary flex-shrink-0" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
               <Button className="w-full font-semibold h-11 gap-2" onClick={onGetStarted}>
                 <CreditCard className="h-4 w-4" />
                 Upgrade to Pro
               </Button>
+            </Card>
+          </div>
+
+          {/* Comparison Table */}
+          <div className="max-w-2xl mx-auto">
+            <h3 className="text-lg font-semibold text-foreground text-center mb-6">Feature Comparison</h3>
+            <Card className="glass-card-elevated overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border/50">
+                      <th className="text-left p-3 sm:p-4 font-semibold text-foreground">Feature</th>
+                      <th className="text-center p-3 sm:p-4 font-semibold text-foreground w-24">Free</th>
+                      <th className="text-center p-3 sm:p-4 font-semibold text-primary w-24">Pro</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {comparisonFeatures.map((f, i) => (
+                      <tr key={f.name} className={i % 2 === 0 ? 'bg-muted/20' : ''}>
+                        <td className="p-3 sm:p-4 text-foreground">{f.name}</td>
+                        <td className="p-3 sm:p-4 text-center">
+                          {typeof f.free === 'boolean' ? (
+                            f.free ? <Check className="h-4 w-4 text-primary mx-auto" /> : <X className="h-4 w-4 text-muted-foreground/40 mx-auto" />
+                          ) : (
+                            <span className="text-muted-foreground">{f.free}</span>
+                          )}
+                        </td>
+                        <td className="p-3 sm:p-4 text-center">
+                          {typeof f.pro === 'boolean' ? (
+                            f.pro ? <Check className="h-4 w-4 text-primary mx-auto" /> : <X className="h-4 w-4 text-muted-foreground/40 mx-auto" />
+                          ) : (
+                            <span className="font-medium text-foreground">{f.pro}</span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </Card>
           </div>
         </div>
