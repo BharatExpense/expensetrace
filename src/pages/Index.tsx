@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Receipt, LogOut, CreditCard } from 'lucide-react';
+import { Receipt, LogOut, Plus, BarChart3, Target, ArrowRightLeft, Wallet, TrendingUp, PieChart } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import { ProfileSettings } from '@/components/ProfileSettings';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { ExpenseForm } from '@/components/ExpenseForm';
 import { ExpenseList } from '@/components/ExpenseList';
 import { ExpenseSummary } from '@/components/ExpenseSummary';
@@ -20,6 +21,7 @@ import { CurrencyConverter } from '@/components/CurrencyConverter';
 import { ProjectSelector } from '@/components/ProjectSelector';
 import { ProjectOnboarding } from '@/components/ProjectOnboarding';
 import { SmartInsights } from '@/components/SmartInsights';
+import { BudgetOverview } from '@/components/BudgetOverview';
 import { useAuth } from '@/hooks/useAuth';
 import { useExpensesDb } from '@/hooks/useExpensesDb';
 import { useBudgets } from '@/hooks/useBudgets';
@@ -32,6 +34,7 @@ import { format } from 'date-fns';
 
 const Index = () => {
   const [showAuth, setShowAuth] = useState(false);
+  const [showAddExpense, setShowAddExpense] = useState(false);
   const { user, isLoading: authLoading, signOut, isAuthenticated } = useAuth();
   const { selectedProject, selectedProjectId, projects, isLoading: projectsLoading } = useProjectContext();
   
@@ -59,15 +62,14 @@ const Index = () => {
     const result = await addExpense(expense);
     if (result) {
       playExpenseAdded();
+      setShowAddExpense(false);
       toast({
         title: 'Expense added!',
         description: `${formatAmount(expense.amount)} added to ${expense.category}`,
       });
 
-      // Update last expense date for daily reminder tracking
       await updatePreferences({ lastExpenseDate: format(new Date(), 'yyyy-MM-dd') });
 
-      // Check budget alerts
       const budget = budgets.find(b => b.category === expense.category);
       if (budget) {
         const newTotal = (getExpensesByCategory()[expense.category] || 0) + expense.amount;
@@ -141,7 +143,6 @@ const Index = () => {
     return <LandingPage onGetStarted={() => setShowAuth(true)} />;
   }
 
-  // Show project loading state
   if (projectsLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -150,14 +151,11 @@ const Index = () => {
     );
   }
 
-  // Show onboarding if no projects exist
   if (projects.length === 0) {
     return <ProjectOnboarding />;
   }
 
-  const isLoading = expensesLoading;
-
-  if (isLoading) {
+  if (expensesLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="animate-pulse text-muted-foreground">Loading your expenses...</div>
@@ -166,12 +164,11 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col pb-20 md:pb-0">
       {/* Header */}
       <header className="border-b border-border/40 bg-card/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
         <div className="px-3 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-3 md:py-4">
           <div className="flex items-center justify-between gap-2 sm:gap-4">
-            {/* Left: Logo & Project */}
             <div className="flex items-center gap-1.5 sm:gap-3 md:gap-4 min-w-0 flex-shrink">
               <img src={logo} alt="ExpenseTrace" className="h-6 sm:h-8 md:h-10 w-auto flex-shrink-0" />
               <div className="flex flex-col min-w-0">
@@ -180,9 +177,7 @@ const Index = () => {
               </div>
             </div>
             
-            {/* Right: Actions - Responsive layout */}
             <div className="flex items-center gap-0.5 sm:gap-1.5 md:gap-2 flex-shrink-0">
-              {/* Desktop only: Currency & Notifications */}
               <div className="hidden lg:flex items-center gap-1.5">
                 <CurrencySelector />
                 <NotificationManager 
@@ -191,13 +186,11 @@ const Index = () => {
                   lastExpenseDate={preferences?.lastExpenseDate}
                 />
               </div>
-              {/* Theme & Profile - always visible but compact on mobile */}
               <div className="flex items-center gap-0.5 sm:gap-1">
                 <ThemeToggle />
                 <ProfileSettings />
               </div>
-              {/* Export & Sign out - hidden on smallest screens */}
-              <div className="hidden xs:flex items-center gap-0.5 sm:gap-1">
+              <div className="hidden sm:flex items-center gap-0.5 sm:gap-1">
                 <ExportButton expenses={expenses} />
               </div>
               <Button 
@@ -212,7 +205,6 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Mobile/Tablet: Currency & Notifications row */}
           <div className="flex items-center gap-1.5 sm:gap-2 mt-2 pt-2 border-t border-border/30 lg:hidden">
             <CurrencySelector />
             <NotificationManager 
@@ -220,12 +212,15 @@ const Index = () => {
               expensesByCategory={getExpensesByCategory()}
               lastExpenseDate={preferences?.lastExpenseDate}
             />
+            <div className="sm:hidden ml-auto">
+              <ExportButton expenses={expenses} />
+            </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 page-container py-6 sm:py-8 lg:py-10 space-y-6 sm:space-y-8 lg:space-y-10">
+      <main className="flex-1 page-container py-4 sm:py-6 lg:py-8 space-y-4 sm:space-y-6 lg:space-y-8">
         {/* Project Header */}
         {selectedProject && (
           <div className="animate-fade-in-up">
@@ -234,12 +229,12 @@ const Index = () => {
               {selectedProject.name}
             </h1>
             {selectedProject.description && (
-              <p className="text-muted-foreground mt-1.5 text-sm sm:text-base max-w-2xl">{selectedProject.description}</p>
+              <p className="text-muted-foreground mt-1 text-sm sm:text-base max-w-2xl">{selectedProject.description}</p>
             )}
           </div>
         )}
 
-        {/* Summary Section */}
+        {/* Summary Cards */}
         <section className="animate-fade-in-up" style={{ animationDelay: '50ms' }}>
           <ExpenseSummary
             totalExpenses={getTotalExpenses()}
@@ -248,62 +243,66 @@ const Index = () => {
           />
         </section>
 
+        {/* Budget Overview (compact) */}
+        {budgets.length > 0 && (
+          <section className="animate-fade-in-up" style={{ animationDelay: '75ms' }}>
+            <BudgetOverview budgets={budgets} expensesByCategory={getExpensesByCategory()} />
+          </section>
+        )}
+
         {/* Smart Insights */}
-        <section className="animate-fade-in-up" style={{ animationDelay: '75ms' }}>
+        <section className="animate-fade-in-up" style={{ animationDelay: '100ms' }}>
           <SmartInsights expenses={expenses} budgets={budgets} />
         </section>
-        <Tabs defaultValue="expenses" className="space-y-5 sm:space-y-6 lg:space-y-8">
-          <TabsList className="grid w-full grid-cols-4 max-w-lg h-11 sm:h-12 p-1 bg-muted/50">
-            <TabsTrigger value="expenses" className="text-xs sm:text-sm font-medium">Expenses</TabsTrigger>
-            <TabsTrigger value="charts" className="text-xs sm:text-sm font-medium">Analytics</TabsTrigger>
-            <TabsTrigger value="budgets" className="text-xs sm:text-sm font-medium">Budgets</TabsTrigger>
-            <TabsTrigger value="converter" className="text-xs sm:text-sm font-medium">Converter</TabsTrigger>
+
+        {/* Tabs: Transactions, Analytics, Budgets, Converter */}
+        <Tabs defaultValue="transactions" className="space-y-4 sm:space-y-6">
+          <TabsList className="grid w-full grid-cols-4 max-w-lg h-10 sm:h-11 p-1 bg-muted/50">
+            <TabsTrigger value="transactions" className="text-xs sm:text-sm font-medium gap-1.5">
+              <Receipt className="h-3.5 w-3.5 hidden sm:block" />
+              Expenses
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="text-xs sm:text-sm font-medium gap-1.5">
+              <BarChart3 className="h-3.5 w-3.5 hidden sm:block" />
+              Analytics
+            </TabsTrigger>
+            <TabsTrigger value="budgets" className="text-xs sm:text-sm font-medium gap-1.5">
+              <Target className="h-3.5 w-3.5 hidden sm:block" />
+              Budgets
+            </TabsTrigger>
+            <TabsTrigger value="converter" className="text-xs sm:text-sm font-medium gap-1.5">
+              <ArrowRightLeft className="h-3.5 w-3.5 hidden sm:block" />
+              Converter
+            </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="expenses" className="space-y-5 sm:space-y-6 lg:space-y-8 mt-0">
-            {/* Two Column Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 sm:gap-6 lg:gap-8">
-              {/* Add Expense Form */}
-              <section className="lg:col-span-2 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-                <Card className="glass-card-elevated lg:sticky lg:top-24">
-                  <CardHeader className="pb-3 sm:pb-4">
-                    <CardTitle className="section-header">
-                      <div className="p-2 rounded-lg bg-primary/10">
-                        <Receipt className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-                      </div>
-                      Add Expense
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <ExpenseForm onSubmit={handleAddExpense} />
-                  </CardContent>
-                </Card>
-              </section>
-
-              {/* Expense List */}
-              <section className="lg:col-span-3 animate-fade-in-up" style={{ animationDelay: '150ms' }}>
-                <Card className="glass-card-elevated">
-                  <CardHeader className="pb-3 sm:pb-4">
-                    <CardTitle className="section-header">
-                      <div className="p-2 rounded-lg bg-primary/10">
-                        <Receipt className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-                      </div>
-                      Recent Expenses
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <ExpenseList expenses={expenses} onDelete={handleDeleteExpense} onEdit={handleEditExpense} />
-                  </CardContent>
-                </Card>
-              </section>
-            </div>
+          <TabsContent value="transactions" className="mt-0">
+            <Card className="glass-card-elevated">
+              <CardHeader className="pb-3 sm:pb-4">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="section-header">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      <Receipt className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                    </div>
+                    Recent Transactions
+                  </CardTitle>
+                  <Button size="sm" className="gap-1.5 hidden md:flex" onClick={() => setShowAddExpense(true)}>
+                    <Plus className="h-4 w-4" />
+                    Add Expense
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <ExpenseList expenses={expenses} onDelete={handleDeleteExpense} onEdit={handleEditExpense} />
+              </CardContent>
+            </Card>
           </TabsContent>
 
-          <TabsContent value="charts" className="animate-fade-in mt-0">
+          <TabsContent value="analytics" className="mt-0">
             <ExpenseCharts expenses={expenses} />
           </TabsContent>
 
-          <TabsContent value="budgets" className="animate-fade-in mt-0">
+          <TabsContent value="budgets" className="mt-0">
             <BudgetManager
               budgets={budgets}
               expensesByCategory={getExpensesByCategory()}
@@ -312,7 +311,7 @@ const Index = () => {
             />
           </TabsContent>
 
-          <TabsContent value="converter" className="animate-fade-in mt-0">
+          <TabsContent value="converter" className="mt-0">
             <div className="max-w-md mx-auto">
               <CurrencyConverter />
             </div>
@@ -320,10 +319,56 @@ const Index = () => {
         </Tabs>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-border/40 mt-auto bg-card/50">
-        <div className="page-container py-5 sm:py-6">
-          <p className="text-center text-xs sm:text-sm text-muted-foreground">
+      {/* Floating Add Expense Button (mobile) */}
+      <button
+        onClick={() => setShowAddExpense(true)}
+        className="fixed bottom-24 md:bottom-8 right-4 sm:right-6 z-40 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-glow flex items-center justify-center hover-lift active:scale-95 transition-all"
+        aria-label="Add Expense"
+      >
+        <Plus className="h-6 w-6" />
+      </button>
+
+      {/* Add Expense Modal */}
+      <Dialog open={showAddExpense} onOpenChange={setShowAddExpense}>
+        <DialogContent className="max-w-[92vw] sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-primary/10">
+                <Receipt className="h-4 w-4 text-primary" />
+              </div>
+              Add Expense
+            </DialogTitle>
+          </DialogHeader>
+          <ExpenseForm onSubmit={handleAddExpense} />
+        </DialogContent>
+      </Dialog>
+
+      {/* Mobile Bottom Nav */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-lg border-t border-border/40 md:hidden">
+        <div className="flex items-center justify-around py-2 px-2">
+          <MobileNavItem icon={Wallet} label="Home" active />
+          <MobileNavItem icon={BarChart3} label="Analytics" onClick={() => {
+            document.querySelector<HTMLButtonElement>('[data-state][value="analytics"]')?.click();
+          }} />
+          <button
+            onClick={() => setShowAddExpense(true)}
+            className="flex flex-col items-center justify-center -mt-5 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-glow"
+          >
+            <Plus className="h-6 w-6" />
+          </button>
+          <MobileNavItem icon={Target} label="Budgets" onClick={() => {
+            document.querySelector<HTMLButtonElement>('[data-state][value="budgets"]')?.click();
+          }} />
+          <MobileNavItem icon={PieChart} label="Insights" onClick={() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }} />
+        </div>
+      </nav>
+
+      {/* Footer (desktop) */}
+      <footer className="border-t border-border/40 mt-auto bg-card/50 hidden md:block">
+        <div className="page-container py-4">
+          <p className="text-center text-xs text-muted-foreground">
             Your expenses are synced across all your devices.
             <span className="ml-1 text-primary font-medium">Secure and private.</span>
           </p>
@@ -332,5 +377,12 @@ const Index = () => {
     </div>
   );
 };
+
+const MobileNavItem = ({ icon: Icon, label, active, onClick }: { icon: any; label: string; active?: boolean; onClick?: () => void }) => (
+  <button onClick={onClick} className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-colors ${active ? 'text-primary' : 'text-muted-foreground'}`}>
+    <Icon className="h-5 w-5" />
+    <span className="text-[10px] font-medium">{label}</span>
+  </button>
+);
 
 export default Index;
