@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart3, PieChartIcon, TrendingUp } from 'lucide-react';
+import { BarChart3, PieChartIcon, TrendingUp, Activity } from 'lucide-react';
 import {
   AreaChart,
   Area,
@@ -15,16 +15,18 @@ import {
   Legend,
   BarChart,
   Bar,
+  LineChart,
+  Line,
 } from 'recharts';
 import { Expense, EXPENSE_CATEGORIES, getCategoryInfo } from '@/types/expense';
-import { format, parseISO, startOfMonth, endOfMonth, eachMonthOfInterval, subMonths } from 'date-fns';
+import { format, parseISO, startOfMonth, endOfMonth, eachMonthOfInterval, eachDayOfInterval, subMonths, subDays } from 'date-fns';
 
 interface ExpenseChartsProps {
   expenses: Expense[];
 }
 
 export const ExpenseCharts = ({ expenses }: ExpenseChartsProps) => {
-  // Calculate monthly spending trend (last 6 months)
+  // Monthly spending trend (last 6 months)
   const monthlyData = useMemo(() => {
     const now = new Date();
     const sixMonthsAgo = subMonths(now, 5);
@@ -33,7 +35,6 @@ export const ExpenseCharts = ({ expenses }: ExpenseChartsProps) => {
     return months.map(month => {
       const monthStart = startOfMonth(month);
       const monthEnd = endOfMonth(month);
-      
       const total = expenses
         .filter(e => {
           const date = parseISO(e.date);
@@ -41,14 +42,11 @@ export const ExpenseCharts = ({ expenses }: ExpenseChartsProps) => {
         })
         .reduce((sum, e) => sum + e.amount, 0);
 
-      return {
-        month: format(month, 'MMM yyyy'),
-        amount: total,
-      };
+      return { month: format(month, 'MMM yyyy'), amount: total };
     });
   }, [expenses]);
 
-  // Calculate category distribution for pie chart
+  // Category distribution for pie chart
   const categoryData = useMemo(() => {
     const byCategory: Record<string, number> = {};
     expenses.forEach(e => {
@@ -67,7 +65,6 @@ export const ExpenseCharts = ({ expenses }: ExpenseChartsProps) => {
   // Weekly comparison data
   const weeklyData = useMemo(() => {
     const weeks: Record<string, number> = {};
-    
     expenses.forEach(e => {
       const date = parseISO(e.date);
       const weekStart = format(date, 'wo');
@@ -81,6 +78,22 @@ export const ExpenseCharts = ({ expenses }: ExpenseChartsProps) => {
       .map(([week, amount]) => ({ week, amount }));
   }, [expenses]);
 
+  // Daily spending trend (last 30 days)
+  const dailyData = useMemo(() => {
+    const now = new Date();
+    const thirtyDaysAgo = subDays(now, 29);
+    const days = eachDayOfInterval({ start: thirtyDaysAgo, end: now });
+
+    return days.map(day => {
+      const dayStr = format(day, 'yyyy-MM-dd');
+      const total = expenses
+        .filter(e => e.date === dayStr)
+        .reduce((sum, e) => sum + e.amount, 0);
+
+      return { day: format(day, 'dd MMM'), amount: total };
+    });
+  }, [expenses]);
+
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -88,6 +101,13 @@ export const ExpenseCharts = ({ expenses }: ExpenseChartsProps) => {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(value);
+  };
+
+  const tooltipStyle = {
+    backgroundColor: 'hsl(var(--card))',
+    border: '1px solid hsl(var(--border))',
+    borderRadius: '10px',
+    fontSize: '13px',
   };
 
   if (expenses.length === 0) {
@@ -108,15 +128,15 @@ export const ExpenseCharts = ({ expenses }: ExpenseChartsProps) => {
       {/* Monthly Spending Trend */}
       <Card className="glass-card-elevated">
         <CardHeader className="pb-2 sm:pb-3">
-          <CardTitle className="section-header">
+          <CardTitle className="section-header text-base sm:text-lg">
             <div className="p-2 rounded-lg bg-primary/10">
               <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
             </div>
-            Spending Trend
+            Monthly Trend
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[250px] sm:h-[300px]">
+          <div className="h-[220px] sm:h-[280px]">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={monthlyData}>
                 <defs>
@@ -126,35 +146,10 @@ export const ExpenseCharts = ({ expenses }: ExpenseChartsProps) => {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                <XAxis 
-                  dataKey="month" 
-                  stroke="hsl(var(--muted-foreground))"
-                  fontSize={11}
-                  tickMargin={8}
-                />
-                <YAxis 
-                  stroke="hsl(var(--muted-foreground))"
-                  fontSize={11}
-                  tickFormatter={formatCurrency}
-                  tickMargin={8}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'hsl(var(--card))',
-                    border: '1px solid hsl(var(--border))',
-                    borderRadius: '10px',
-                    fontSize: '13px',
-                  }}
-                  formatter={(value: number) => [formatCurrency(value), 'Amount']}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="amount"
-                  stroke="hsl(var(--primary))"
-                  strokeWidth={2}
-                  fillOpacity={1}
-                  fill="url(#colorAmount)"
-                />
+                <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={10} tickMargin={8} />
+                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={10} tickFormatter={formatCurrency} tickMargin={8} />
+                <Tooltip contentStyle={tooltipStyle} formatter={(value: number) => [formatCurrency(value), 'Amount']} />
+                <Area type="monotone" dataKey="amount" stroke="hsl(var(--primary))" strokeWidth={2} fillOpacity={1} fill="url(#colorAmount)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -164,7 +159,7 @@ export const ExpenseCharts = ({ expenses }: ExpenseChartsProps) => {
       {/* Category Breakdown Pie Chart */}
       <Card className="glass-card-elevated">
         <CardHeader className="pb-2 sm:pb-3">
-          <CardTitle className="section-header">
+          <CardTitle className="section-header text-base sm:text-lg">
             <div className="p-2 rounded-lg bg-primary/10">
               <PieChartIcon className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
             </div>
@@ -172,38 +167,17 @@ export const ExpenseCharts = ({ expenses }: ExpenseChartsProps) => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[250px] sm:h-[300px]">
+          <div className="h-[220px] sm:h-[280px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie
-                  data={categoryData}
-                  cx="50%"
-                  cy="45%"
-                  innerRadius={50}
-                  outerRadius={85}
-                  paddingAngle={2}
-                  dataKey="value"
-                >
+                <Pie data={categoryData} cx="50%" cy="45%" innerRadius={45} outerRadius={80} paddingAngle={2} dataKey="value">
                   {categoryData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'hsl(var(--card))',
-                    border: '1px solid hsl(var(--border))',
-                    borderRadius: '10px',
-                    fontSize: '13px',
-                  }}
-                  formatter={(value: number) => [formatCurrency(value), 'Spent']}
-                />
-                <Legend
-                  verticalAlign="bottom"
-                  height={36}
-                  wrapperStyle={{ fontSize: '12px' }}
-                  formatter={(value) => (
-                    <span style={{ color: 'hsl(var(--foreground))' }}>{value}</span>
-                  )}
+                <Tooltip contentStyle={tooltipStyle} formatter={(value: number) => [formatCurrency(value), 'Spent']} />
+                <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '11px' }}
+                  formatter={(value) => <span style={{ color: 'hsl(var(--foreground))' }}>{value}</span>}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -211,10 +185,35 @@ export const ExpenseCharts = ({ expenses }: ExpenseChartsProps) => {
         </CardContent>
       </Card>
 
-      {/* Weekly Comparison */}
-      <Card className="glass-card-elevated lg:col-span-2">
+      {/* Daily Spending Line Chart */}
+      <Card className="glass-card-elevated">
         <CardHeader className="pb-2 sm:pb-3">
-          <CardTitle className="section-header">
+          <CardTitle className="section-header text-base sm:text-lg">
+            <div className="p-2 rounded-lg bg-primary/10">
+              <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+            </div>
+            Daily Spending (30 days)
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[220px] sm:h-[280px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={dailyData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis dataKey="day" stroke="hsl(var(--muted-foreground))" fontSize={9} tickMargin={8} interval={4} />
+                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={10} tickFormatter={formatCurrency} tickMargin={8} />
+                <Tooltip contentStyle={tooltipStyle} formatter={(value: number) => [formatCurrency(value), 'Spent']} />
+                <Line type="monotone" dataKey="amount" stroke="hsl(var(--primary))" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Weekly Comparison */}
+      <Card className="glass-card-elevated">
+        <CardHeader className="pb-2 sm:pb-3">
+          <CardTitle className="section-header text-base sm:text-lg">
             <div className="p-2 rounded-lg bg-primary/10">
               <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
             </div>
@@ -222,36 +221,14 @@ export const ExpenseCharts = ({ expenses }: ExpenseChartsProps) => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[200px] sm:h-[250px]">
+          <div className="h-[220px] sm:h-[280px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={weeklyData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                <XAxis 
-                  dataKey="week" 
-                  stroke="hsl(var(--muted-foreground))"
-                  fontSize={11}
-                  tickMargin={8}
-                />
-                <YAxis 
-                  stroke="hsl(var(--muted-foreground))"
-                  fontSize={11}
-                  tickFormatter={formatCurrency}
-                  tickMargin={8}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'hsl(var(--card))',
-                    border: '1px solid hsl(var(--border))',
-                    borderRadius: '10px',
-                    fontSize: '13px',
-                  }}
-                  formatter={(value: number) => [formatCurrency(value), 'Spent']}
-                />
-                <Bar 
-                  dataKey="amount" 
-                  fill="hsl(var(--primary))" 
-                  radius={[6, 6, 0, 0]}
-                />
+                <XAxis dataKey="week" stroke="hsl(var(--muted-foreground))" fontSize={10} tickMargin={8} />
+                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={10} tickFormatter={formatCurrency} tickMargin={8} />
+                <Tooltip contentStyle={tooltipStyle} formatter={(value: number) => [formatCurrency(value), 'Spent']} />
+                <Bar dataKey="amount" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
