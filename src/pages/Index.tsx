@@ -22,6 +22,7 @@ import { ProjectSelector } from '@/components/ProjectSelector';
 import { ProjectOnboarding } from '@/components/ProjectOnboarding';
 import { SmartInsights } from '@/components/SmartInsights';
 import { BudgetOverview } from '@/components/BudgetOverview';
+import { RecentTransactions } from '@/components/RecentTransactions';
 import { useAuth } from '@/hooks/useAuth';
 import { useExpensesDb } from '@/hooks/useExpensesDb';
 import { useBudgets } from '@/hooks/useBudgets';
@@ -35,6 +36,7 @@ import { format } from 'date-fns';
 const Index = () => {
   const [showAuth, setShowAuth] = useState(false);
   const [showAddExpense, setShowAddExpense] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
   const { user, isLoading: authLoading, signOut, isAuthenticated } = useAuth();
   const { selectedProject, selectedProjectId, projects, isLoading: projectsLoading } = useProjectContext();
   
@@ -106,26 +108,16 @@ const Index = () => {
   const handleEditExpense = async (id: string, updates: Parameters<typeof updateExpense>[1]) => {
     const success = await updateExpense(id, updates);
     if (success) {
-      toast({
-        title: 'Expense updated',
-        description: 'Your expense has been successfully updated.',
-      });
+      toast({ title: 'Expense updated', description: 'Your expense has been successfully updated.' });
     } else {
-      toast({
-        title: 'Failed to update expense',
-        description: 'Please try again.',
-        variant: 'destructive',
-      });
+      toast({ title: 'Failed to update expense', description: 'Please try again.', variant: 'destructive' });
     }
     return success;
   };
 
   const handleSignOut = async () => {
     await signOut();
-    toast({
-      title: 'Signed out',
-      description: 'You have been signed out successfully.',
-    });
+    toast({ title: 'Signed out', description: 'You have been signed out successfully.' });
   };
 
   if (authLoading) {
@@ -137,9 +129,7 @@ const Index = () => {
   }
 
   if (!isAuthenticated) {
-    if (showAuth) {
-      return <AuthForm />;
-    }
+    if (showAuth) return <AuthForm />;
     return <LandingPage onGetStarted={() => setShowAuth(true)} />;
   }
 
@@ -151,9 +141,7 @@ const Index = () => {
     );
   }
 
-  if (projects.length === 0) {
-    return <ProjectOnboarding />;
-  }
+  if (projects.length === 0) return <ProjectOnboarding />;
 
   if (expensesLoading) {
     return (
@@ -194,9 +182,7 @@ const Index = () => {
                 <ExportButton expenses={expenses} />
               </div>
               <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={handleSignOut} 
+                variant="ghost" size="icon" onClick={handleSignOut} 
                 className="h-7 w-7 sm:h-8 sm:w-8 md:h-9 md:w-9 text-muted-foreground hover:text-foreground"
                 title="Sign Out"
               >
@@ -243,22 +229,21 @@ const Index = () => {
           />
         </section>
 
-        {/* Budget Overview (compact) */}
-        {budgets.length > 0 && (
-          <section className="animate-fade-in-up" style={{ animationDelay: '75ms' }}>
-            <BudgetOverview budgets={budgets} expensesByCategory={getExpensesByCategory()} />
-          </section>
-        )}
-
-        {/* Smart Insights */}
-        <section className="animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+        {/* Quick Overview: Recent Transactions + Budget + Insights */}
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 animate-fade-in-up" style={{ animationDelay: '75ms' }}>
+          <RecentTransactions expenses={expenses} limit={5} />
+          <div className="space-y-4 sm:space-y-5">
+            {budgets.length > 0 && (
+              <BudgetOverview budgets={budgets} expensesByCategory={getExpensesByCategory()} />
+            )}
+          </div>
           <SmartInsights expenses={expenses} budgets={budgets} />
         </section>
 
         {/* Tabs: Transactions, Analytics, Budgets, Converter */}
-        <Tabs defaultValue="transactions" className="space-y-4 sm:space-y-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
           <TabsList className="grid w-full grid-cols-4 max-w-lg h-10 sm:h-11 p-1 bg-muted/50">
-            <TabsTrigger value="transactions" className="text-xs sm:text-sm font-medium gap-1.5">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm font-medium gap-1.5">
               <Receipt className="h-3.5 w-3.5 hidden sm:block" />
               Expenses
             </TabsTrigger>
@@ -276,15 +261,15 @@ const Index = () => {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="transactions" className="mt-0">
+          <TabsContent value="overview" className="mt-0">
             <Card className="glass-card-elevated">
               <CardHeader className="pb-3 sm:pb-4">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="section-header">
+                  <CardTitle className="section-header text-base sm:text-lg">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <Receipt className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     </div>
-                    Recent Transactions
+                    All Transactions
                   </CardTitle>
                   <Button size="sm" className="gap-1.5 hidden md:flex" onClick={() => setShowAddExpense(true)}>
                     <Plus className="h-4 w-4" />
@@ -319,7 +304,7 @@ const Index = () => {
         </Tabs>
       </main>
 
-      {/* Floating Add Expense Button (mobile) */}
+      {/* Floating Add Expense Button */}
       <button
         onClick={() => setShowAddExpense(true)}
         className="fixed bottom-24 md:bottom-8 right-4 sm:right-6 z-40 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-glow flex items-center justify-center hover-lift active:scale-95 transition-all"
@@ -346,22 +331,16 @@ const Index = () => {
       {/* Mobile Bottom Nav */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-lg border-t border-border/40 md:hidden">
         <div className="flex items-center justify-around py-2 px-2">
-          <MobileNavItem icon={Wallet} label="Home" active />
-          <MobileNavItem icon={BarChart3} label="Analytics" onClick={() => {
-            document.querySelector<HTMLButtonElement>('[data-state][value="analytics"]')?.click();
-          }} />
+          <MobileNavItem icon={Wallet} label="Home" active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} />
+          <MobileNavItem icon={BarChart3} label="Analytics" active={activeTab === 'analytics'} onClick={() => setActiveTab('analytics')} />
           <button
             onClick={() => setShowAddExpense(true)}
             className="flex flex-col items-center justify-center -mt-5 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-glow"
           >
             <Plus className="h-6 w-6" />
           </button>
-          <MobileNavItem icon={Target} label="Budgets" onClick={() => {
-            document.querySelector<HTMLButtonElement>('[data-state][value="budgets"]')?.click();
-          }} />
-          <MobileNavItem icon={PieChart} label="Insights" onClick={() => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }} />
+          <MobileNavItem icon={Target} label="Budgets" active={activeTab === 'budgets'} onClick={() => setActiveTab('budgets')} />
+          <MobileNavItem icon={PieChart} label="Insights" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} />
         </div>
       </nav>
 

@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, Shield, Wallet, Globe, TrendingUp, Star, Check, X, Zap, Eye, Target, AlertTriangle, Lightbulb, CreditCard, Users, FileText, Cloud } from 'lucide-react';
+import { ArrowRight, BarChart3, Shield, Wallet, Globe, TrendingUp, Star, Check, X, Zap, Eye, Target, AlertTriangle, Lightbulb, CreditCard, Users, FileText, Cloud, PieChart, Bell, Download, Repeat } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import heroIllustration from '@/assets/hero-illustration.png';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,9 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
     { icon: Globe, title: 'Multi-Currency', description: 'Support for 20+ currencies with built-in converter for international tracking.' },
     { icon: Shield, title: 'Secure & Private', description: 'Your financial data is encrypted and synced securely across all devices.' },
     { icon: Lightbulb, title: 'Smart Insights', description: 'AI-powered suggestions to optimize your spending and save more money.' },
+    { icon: Repeat, title: 'Recurring Expenses', description: 'Auto-track monthly bills and subscriptions so nothing slips through.' },
+    { icon: Download, title: 'Export Reports', description: 'Download your data as CSV or PDF for record-keeping and tax prep.' },
+    { icon: Bell, title: 'Budget Alerts', description: 'Get notified when you approach or exceed your spending limits.' },
   ];
 
   const testimonials = [
@@ -34,10 +37,17 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
     { name: 'Advanced charts & reports', free: false, pro: true },
     { name: 'Export (CSV/PDF)', free: false, pro: true },
     { name: 'Budget alerts', free: true, pro: true },
+    { name: 'Recurring expenses', free: '3', pro: 'Unlimited' },
     { name: 'Smart AI insights', free: false, pro: true },
     { name: 'Cloud backup & sync', free: false, pro: true },
     { name: 'Unlimited projects', free: false, pro: true },
     { name: 'Priority support', free: false, pro: true },
+  ];
+
+  const steps = [
+    { num: '01', title: 'Sign Up Free', desc: 'Create your account in seconds. No credit card needed.' },
+    { num: '02', title: 'Log Expenses', desc: 'Add expenses with one tap — category, amount, done.' },
+    { num: '03', title: 'Get Insights', desc: 'See where your money goes with charts and smart tips.' },
   ];
 
   return (
@@ -89,9 +99,11 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
                 </Button>
               </div>
 
-              <p className="text-xs sm:text-sm text-muted-foreground animate-fade-in" style={{ animationDelay: '300ms' }}>
-                ✓ No credit card required • ✓ Free forever plan available
-              </p>
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 text-xs sm:text-sm text-muted-foreground animate-fade-in" style={{ animationDelay: '300ms' }}>
+                <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-primary" /> No credit card required</span>
+                <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-primary" /> Free forever plan</span>
+                <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-primary" /> 256-bit encryption</span>
+              </div>
             </div>
 
             <div className="relative hidden lg:block animate-scale-in" style={{ animationDelay: '200ms' }}>
@@ -172,6 +184,65 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
         </div>
       </section>
 
+      {/* How It Works */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-muted/30">
+        <div className="page-container">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4">
+              How It Works
+            </h2>
+            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
+              Get started in three simple steps.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto">
+            {steps.map((step, i) => (
+              <div key={step.num} className="text-center space-y-4 animate-fade-in-up" style={{ animationDelay: `${i * 120}ms` }}>
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto">
+                  <span className="text-2xl font-extrabold gradient-text">{step.num}</span>
+                </div>
+                <h3 className="text-lg font-semibold text-foreground">{step.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Dashboard Preview */}
+      <section className="py-16 sm:py-20 lg:py-24">
+        <div className="page-container">
+          <div className="text-center mb-10 sm:mb-14">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
+              A dashboard built for <span className="gradient-text">clarity</span>
+            </h2>
+            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
+              Everything you need at a glance — expenses, budgets, charts, and insights in one clean view.
+            </p>
+          </div>
+          <div className="relative max-w-4xl mx-auto">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-3xl blur-3xl scale-95" />
+            <div className="relative rounded-2xl overflow-hidden border border-border/40 shadow-2xl">
+              <img src={heroIllustration} alt="ExpenseTrace Dashboard" className="w-full h-auto" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+            </div>
+            {/* Floating feature labels */}
+            <div className="hidden lg:flex absolute -left-4 top-1/4 items-center gap-2 px-4 py-2 rounded-xl bg-card border border-border/50 shadow-lg animate-fade-in" style={{ animationDelay: '400ms' }}>
+              <PieChart className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium text-foreground">Category Charts</span>
+            </div>
+            <div className="hidden lg:flex absolute -right-4 top-1/3 items-center gap-2 px-4 py-2 rounded-xl bg-card border border-border/50 shadow-lg animate-fade-in" style={{ animationDelay: '600ms' }}>
+              <Lightbulb className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium text-foreground">Smart Insights</span>
+            </div>
+            <div className="hidden lg:flex absolute -left-4 bottom-1/4 items-center gap-2 px-4 py-2 rounded-xl bg-card border border-border/50 shadow-lg animate-fade-in" style={{ animationDelay: '800ms' }}>
+              <Target className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium text-foreground">Budget Tracking</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section className="py-16 sm:py-20 lg:py-24 bg-muted/30">
         <div className="page-container">
@@ -186,7 +257,7 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
             {features.map((feature, index) => (
-              <Card key={feature.title} className="glass-card-elevated hover-lift border-border/40 animate-fade-in-up" style={{ animationDelay: `${index * 80}ms` }}>
+              <Card key={feature.title} className="glass-card-elevated hover-lift border-border/40 animate-fade-in-up" style={{ animationDelay: `${index * 60}ms` }}>
                 <CardContent className="p-5 sm:p-6 space-y-3 sm:space-y-4">
                   <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center">
                     <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
@@ -224,6 +295,11 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
                 <span className="text-4xl font-extrabold text-foreground">₹0</span>
                 <span className="text-muted-foreground">/month</span>
               </div>
+              <ul className="space-y-2.5 text-sm text-muted-foreground">
+                {['50 transactions/mo', '8 categories', 'Basic analytics', 'Budget alerts', '3 recurring expenses'].map(f => (
+                  <li key={f} className="flex items-center gap-2"><Check className="h-4 w-4 text-primary flex-shrink-0" />{f}</li>
+                ))}
+              </ul>
               <Button variant="outline" className="w-full font-semibold h-11" onClick={onGetStarted}>
                 Get Started
               </Button>
@@ -242,6 +318,11 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
                 <span className="text-4xl font-extrabold gradient-text">₹299</span>
                 <span className="text-muted-foreground">/month</span>
               </div>
+              <ul className="space-y-2.5 text-sm text-foreground">
+                {['Unlimited transactions', 'Custom categories', 'Advanced charts & reports', 'CSV/PDF export', 'Unlimited recurring', 'Smart AI insights', 'Cloud backup & sync'].map(f => (
+                  <li key={f} className="flex items-center gap-2"><Check className="h-4 w-4 text-primary flex-shrink-0" />{f}</li>
+                ))}
+              </ul>
               <Button className="w-full font-semibold h-11 gap-2" onClick={onGetStarted}>
                 <CreditCard className="h-4 w-4" />
                 Upgrade to Pro
@@ -251,33 +332,33 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
 
           {/* Comparison Table */}
           <div className="max-w-2xl mx-auto">
-            <h3 className="text-lg font-semibold text-foreground text-center mb-6">Feature Comparison</h3>
+            <h3 className="text-lg font-semibold text-foreground text-center mb-6">Detailed Comparison</h3>
             <Card className="glass-card-elevated overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border/50">
+                    <tr className="border-b border-border/50 bg-muted/30">
                       <th className="text-left p-3 sm:p-4 font-semibold text-foreground">Feature</th>
                       <th className="text-center p-3 sm:p-4 font-semibold text-foreground w-24">Free</th>
-                      <th className="text-center p-3 sm:p-4 font-semibold text-primary w-24">Pro</th>
+                      <th className="text-center p-3 sm:p-4 font-semibold text-primary w-24">Pro ✨</th>
                     </tr>
                   </thead>
                   <tbody>
                     {comparisonFeatures.map((f, i) => (
-                      <tr key={f.name} className={i % 2 === 0 ? 'bg-muted/20' : ''}>
+                      <tr key={f.name} className={`border-b border-border/20 ${i % 2 === 0 ? 'bg-muted/10' : ''}`}>
                         <td className="p-3 sm:p-4 text-foreground">{f.name}</td>
                         <td className="p-3 sm:p-4 text-center">
                           {typeof f.free === 'boolean' ? (
                             f.free ? <Check className="h-4 w-4 text-primary mx-auto" /> : <X className="h-4 w-4 text-muted-foreground/40 mx-auto" />
                           ) : (
-                            <span className="text-muted-foreground">{f.free}</span>
+                            <span className="text-muted-foreground text-xs font-medium">{f.free}</span>
                           )}
                         </td>
                         <td className="p-3 sm:p-4 text-center">
                           {typeof f.pro === 'boolean' ? (
                             f.pro ? <Check className="h-4 w-4 text-primary mx-auto" /> : <X className="h-4 w-4 text-muted-foreground/40 mx-auto" />
                           ) : (
-                            <span className="font-medium text-foreground">{f.pro}</span>
+                            <span className="font-semibold text-foreground text-xs">{f.pro}</span>
                           )}
                         </td>
                       </tr>

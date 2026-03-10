@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Plus, CalendarIcon } from 'lucide-react';
+import { Plus, CalendarIcon, Repeat } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
 import {
   Select,
   SelectContent,
@@ -29,6 +30,8 @@ interface ExpenseFormProps {
     category: ExpenseCategory;
     amount: number;
     description: string;
+    isRecurring?: boolean;
+    recurringInterval?: string;
   }) => void;
 }
 
@@ -38,13 +41,14 @@ export const ExpenseForm = ({ onSubmit }: ExpenseFormProps) => {
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isRecurring, setIsRecurring] = useState(false);
+  const [recurringInterval, setRecurringInterval] = useState('monthly');
   const { currency } = useCurrency();
 
   const currencyInfo = getCurrencyInfo(currency);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!amount || parseFloat(amount) <= 0) return;
 
     onSubmit({
@@ -52,12 +56,14 @@ export const ExpenseForm = ({ onSubmit }: ExpenseFormProps) => {
       category,
       amount: parseFloat(amount),
       description: description.trim(),
+      isRecurring,
+      recurringInterval: isRecurring ? recurringInterval : undefined,
     });
 
-    // Reset form
     setAmount('');
     setDescription('');
     setDate(new Date());
+    setIsRecurring(false);
   };
 
   return (
@@ -65,17 +71,12 @@ export const ExpenseForm = ({ onSubmit }: ExpenseFormProps) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         {/* Date Picker */}
         <div className="space-y-1.5 sm:space-y-2">
-          <Label htmlFor="date" className="text-xs sm:text-sm font-medium text-foreground">
-            Date
-          </Label>
+          <Label htmlFor="date" className="text-xs sm:text-sm font-medium text-foreground">Date</Label>
           <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className={cn(
-                  'w-full justify-start text-left font-normal h-10 sm:h-11 text-sm',
-                  !date && 'text-muted-foreground'
-                )}
+                className={cn('w-full justify-start text-left font-normal h-10 sm:h-11 text-sm', !date && 'text-muted-foreground')}
               >
                 <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
                 {date ? format(date, 'PPP') : <span>Pick a date</span>}
@@ -85,12 +86,7 @@ export const ExpenseForm = ({ onSubmit }: ExpenseFormProps) => {
               <Calendar
                 mode="single"
                 selected={date}
-                onSelect={(d) => {
-                  if (d) {
-                    setDate(d);
-                    setIsCalendarOpen(false);
-                  }
-                }}
+                onSelect={(d) => { if (d) { setDate(d); setIsCalendarOpen(false); } }}
                 initialFocus
               />
             </PopoverContent>
@@ -99,9 +95,7 @@ export const ExpenseForm = ({ onSubmit }: ExpenseFormProps) => {
 
         {/* Category Select */}
         <div className="space-y-1.5 sm:space-y-2">
-          <Label htmlFor="category" className="text-xs sm:text-sm font-medium text-foreground">
-            Category
-          </Label>
+          <Label htmlFor="category" className="text-xs sm:text-sm font-medium text-foreground">Category</Label>
           <Select value={category} onValueChange={(v) => setCategory(v as ExpenseCategory)}>
             <SelectTrigger className="w-full h-10 sm:h-11 text-sm">
               <SelectValue placeholder="Select category" />
@@ -152,6 +146,34 @@ export const ExpenseForm = ({ onSubmit }: ExpenseFormProps) => {
           className="resize-none text-sm"
         />
       </div>
+
+      {/* Recurring Toggle */}
+      <div className="flex items-center justify-between p-3 rounded-xl bg-muted/40 border border-border/30">
+        <div className="flex items-center gap-2.5">
+          <Repeat className="h-4 w-4 text-muted-foreground" />
+          <div>
+            <p className="text-sm font-medium text-foreground">Recurring expense</p>
+            <p className="text-xs text-muted-foreground">Auto-repeat this expense</p>
+          </div>
+        </div>
+        <Switch checked={isRecurring} onCheckedChange={setIsRecurring} />
+      </div>
+
+      {isRecurring && (
+        <div className="space-y-1.5 sm:space-y-2 animate-fade-in">
+          <Label className="text-xs sm:text-sm font-medium text-foreground">Repeat every</Label>
+          <Select value={recurringInterval} onValueChange={setRecurringInterval}>
+            <SelectTrigger className="h-10 sm:h-11 text-sm">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="weekly">Week</SelectItem>
+              <SelectItem value="monthly">Month</SelectItem>
+              <SelectItem value="yearly">Year</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      )}
 
       {/* Submit Button */}
       <Button type="submit" className="w-full gap-2 h-11 sm:h-12 text-sm sm:text-base font-semibold hover-lift" size="lg">
