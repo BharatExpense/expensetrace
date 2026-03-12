@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       budgets: {
         Row: {
           category: string
@@ -98,6 +122,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      portfolio_holdings: {
+        Row: {
+          buy_price: number
+          created_at: string
+          id: string
+          quantity: number
+          sector: string | null
+          stock_name: string
+          ticker: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          buy_price?: number
+          created_at?: string
+          id?: string
+          quantity?: number
+          sector?: string | null
+          stock_name: string
+          ticker: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          buy_price?: number
+          created_at?: string
+          id?: string
+          quantity?: number
+          sector?: string | null
+          stock_name?: string
+          ticker?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       projects: {
         Row: {
