@@ -90,8 +90,8 @@ export const AuthForm = () => {
       <Card className="w-full max-w-md glass-card-elevated relative z-10 animate-scale-in">
         <CardHeader className="text-center pb-4 sm:pb-6">
           <img src={logo} alt="ExpenseTrace" className="h-10 sm:h-12 w-auto mx-auto mb-3 sm:mb-4" />
-          <CardTitle className="text-xl sm:text-2xl font-bold gradient-text">ExpenseTrace</CardTitle>
-          <CardDescription className="text-sm sm:text-base">Sign in to sync your expenses across devices</CardDescription>
+          <CardTitle className="text-xl sm:text-2xl font-bold gradient-text">PortfolioAI</CardTitle>
+          <CardDescription className="text-sm sm:text-base">Sign in to analyze your portfolio with AI</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="login" className="w-full">
