@@ -1,6 +1,5 @@
-import { ArrowRight, BarChart3, Shield, Wallet, Globe, TrendingUp, Star, Check, X, Zap, Eye, Target, AlertTriangle, Lightbulb, CreditCard, Users, FileText, Cloud, PieChart, Bell, Download, Repeat } from 'lucide-react';
+import { ArrowRight, BarChart3, Shield, TrendingUp, Star, Check, X, Zap, Brain, Activity, Target, PieChart, Bot, FileText, Lock, LineChart } from 'lucide-react';
 import logo from '@/assets/logo.png';
-import heroIllustration from '@/assets/hero-illustration.png';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -10,44 +9,38 @@ interface LandingPageProps {
 
 export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
   const features = [
-    { icon: Wallet, title: 'Track Expenses', description: 'Log and categorize daily expenses with a simple, intuitive interface.' },
-    { icon: BarChart3, title: 'Visual Analytics', description: 'Understand spending patterns with beautiful charts and breakdowns.' },
-    { icon: TrendingUp, title: 'Budget Management', description: 'Set spending limits by category and get alerts when approaching your budget.' },
-    { icon: Globe, title: 'Multi-Currency', description: 'Support for 20+ currencies with built-in converter for international tracking.' },
-    { icon: Shield, title: 'Secure & Private', description: 'Your financial data is encrypted and synced securely across all devices.' },
-    { icon: Lightbulb, title: 'Smart Insights', description: 'AI-powered suggestions to optimize your spending and save more money.' },
-    { icon: Repeat, title: 'Recurring Expenses', description: 'Auto-track monthly bills and subscriptions so nothing slips through.' },
-    { icon: Download, title: 'Export Reports', description: 'Download your data as CSV or PDF for record-keeping and tax prep.' },
-    { icon: Bell, title: 'Budget Alerts', description: 'Get notified when you approach or exceed your spending limits.' },
+    { icon: PieChart, title: 'Portfolio Analytics', description: 'Track holdings, sector allocation, and concentration risk with real-time data.' },
+    { icon: Brain, title: 'AI Insights Engine', description: 'Get explainable, data-driven recommendations to optimize your portfolio.' },
+    { icon: Activity, title: 'Risk Heatmap', description: 'Visualize risk across holdings with beta analysis and volatility metrics.' },
+    { icon: LineChart, title: 'Portfolio Forecasting', description: 'Monte Carlo projections showing potential growth scenarios over 12 months.' },
+    { icon: Bot, title: 'AI Financial Chat', description: 'Ask questions about your portfolio and get instant, contextual advice.' },
+    { icon: FileText, title: 'Intelligence Reports', description: 'Generate downloadable reports with performance, risk, and AI recommendations.' },
+    { icon: Shield, title: 'Risk Analysis', description: 'Diversification scoring, concentration risk, and sector exposure analysis.' },
+    { icon: TrendingUp, title: 'Market Integration', description: 'Real-time market data with price tracking and beta calculations.' },
+    { icon: Lock, title: 'Bank-Grade Security', description: 'Your portfolio data is encrypted end-to-end. We never share your information.' },
   ];
 
   const testimonials = [
-    { name: 'Sarah Mitchell', role: 'Freelancer', review: 'ExpenseTrace completely changed how I manage my money. The visual analytics helped me cut unnecessary spending by 30%!' },
-    { name: 'James Rodriguez', role: 'Business Owner', review: 'The multi-currency support is a game changer for working with international clients. Highly recommended!' },
-    { name: 'Priya Sharma', role: 'Student', review: "Simple, beautiful, and effective. The budget alerts keep me accountable. Best expense app I've used." },
-    { name: 'David Chen', role: 'Software Engineer', review: "Finally an expense tracker that doesn't feel overwhelming. The clean interface makes it easy to log expenses on the go." },
-    { name: 'Emily Watson', role: 'Marketing Manager', review: 'The category breakdowns and charts are incredibly insightful. I now have a clear picture of where every dollar goes.' },
-    { name: 'Omar Al-Rashid', role: 'Consultant', review: "ExpenseTrace stands out with its privacy-first approach and seamless syncing across devices." },
+    { name: 'Rahul Mehra', role: 'Retail Investor', review: 'The AI insights helped me identify that 52% of my portfolio was in tech. After diversifying, my Sharpe ratio improved significantly.' },
+    { name: 'Sarah Chen', role: 'Day Trader', review: 'The risk heatmap is incredible. I can instantly see which positions are dragging my portfolio and make informed decisions.' },
+    { name: 'Michael Park', role: 'Financial Advisor', review: 'I use this for my clients. The AI reports are professional enough to share, and the diversification analysis saves me hours.' },
+    { name: 'Priya Sharma', role: 'Index Investor', review: "Finally a tool that explains WHY my portfolio is risky, not just that it is. The AI chat feels like talking to a real advisor." },
+    { name: 'James Wilson', role: 'Swing Trader', review: 'The portfolio forecasting helped me understand my downside risk. Adjusted my positions and slept better at night.' },
+    { name: 'Aisha Khan', role: 'New Investor', review: "As a beginner, the AI explains everything clearly. It told me my portfolio was too concentrated and suggested ETFs to fix it." },
   ];
 
-  const comparisonFeatures = [
-    { name: 'Monthly transactions', free: '50', pro: 'Unlimited' },
-    { name: 'Expense categories', free: '8', pro: 'Custom + 8' },
-    { name: 'Basic analytics', free: true, pro: true },
-    { name: 'Advanced charts & reports', free: false, pro: true },
-    { name: 'Export (CSV/PDF)', free: false, pro: true },
-    { name: 'Budget alerts', free: true, pro: true },
-    { name: 'Recurring expenses', free: '3', pro: 'Unlimited' },
-    { name: 'Smart AI insights', free: false, pro: true },
-    { name: 'Cloud backup & sync', free: false, pro: true },
-    { name: 'Unlimited projects', free: false, pro: true },
+  const comparison = [
+    { name: 'Portfolio tracking', free: true, pro: true },
+    { name: 'Holdings (max)', free: '10', pro: 'Unlimited' },
+    { name: 'Sector allocation chart', free: true, pro: true },
+    { name: 'Risk & diversification scores', free: true, pro: true },
+    { name: 'Risk heatmap', free: false, pro: true },
+    { name: 'AI insights panel', free: '3/day', pro: 'Unlimited' },
+    { name: 'AI financial assistant chat', free: false, pro: true },
+    { name: 'Portfolio forecasting', free: false, pro: true },
+    { name: 'Intelligence reports (CSV/PDF)', free: false, pro: true },
+    { name: 'Real-time market data', free: 'Delayed', pro: 'Real-time' },
     { name: 'Priority support', free: false, pro: true },
-  ];
-
-  const steps = [
-    { num: '01', title: 'Sign Up Free', desc: 'Create your account in seconds. No credit card needed.' },
-    { num: '02', title: 'Log Expenses', desc: 'Add expenses with one tap — category, amount, done.' },
-    { num: '03', title: 'Get Insights', desc: 'See where your money goes with charts and smart tips.' },
   ];
 
   return (
@@ -55,7 +48,9 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-lg">
         <div className="page-container py-3 sm:py-4 flex items-center justify-between">
-          <img src={logo} alt="ExpenseTrace" className="h-8 sm:h-10 w-auto" />
+          <div className="flex items-center gap-2">
+            <img src={logo} alt="PortfolioAI" className="h-8 sm:h-10 w-auto" />
+          </div>
           <div className="flex items-center gap-2 sm:gap-3">
             <Button variant="ghost" size="sm" onClick={onGetStarted} className="font-medium">Sign In</Button>
             <Button size="sm" onClick={onGetStarted} className="font-semibold gap-1.5">
@@ -69,78 +64,96 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/10" />
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
 
-        <div className="page-container py-16 sm:py-20 md:py-28 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <div className="space-y-6 sm:space-y-8 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/80 text-accent-foreground text-xs sm:text-sm font-medium animate-fade-in backdrop-blur-sm border border-accent-foreground/10">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-                </span>
-                Smart expense tracking made simple
+        <div className="page-container py-20 sm:py-28 md:py-36 relative z-10 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/80 text-accent-foreground text-xs sm:text-sm font-medium animate-fade-in backdrop-blur-sm border border-accent-foreground/10 mb-6">
+            <Brain className="h-3.5 w-3.5 text-primary" />
+            AI-Powered Portfolio Intelligence
+          </div>
+
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-foreground leading-[1.1] tracking-tight text-balance animate-fade-in-up max-w-4xl mx-auto">
+            AI Portfolio Intelligence for{' '}
+            <span className="gradient-text">Smarter Investing</span>
+          </h1>
+
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mt-6 text-pretty animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+            Analyze your portfolio with AI. Get risk scores, diversification insights, sector analysis, and actionable recommendations — all in one intelligent dashboard.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-8 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+            <Button onClick={onGetStarted} size="lg" className="gap-2 font-semibold hover-lift h-12 px-8">
+              Analyze My Portfolio <ArrowRight className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="lg" className="font-medium hover-lift h-12 px-8" onClick={onGetStarted}>
+              Try Demo
+            </Button>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-muted-foreground mt-6 animate-fade-in" style={{ animationDelay: '300ms' }}>
+            <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-primary" /> No credit card required</span>
+            <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-primary" /> Free portfolio analysis</span>
+            <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-primary" /> Bank-grade encryption</span>
+          </div>
+
+          {/* Dashboard Preview Mockup */}
+          <div className="relative mt-16 max-w-4xl mx-auto animate-fade-in-up" style={{ animationDelay: '400ms' }}>
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-3xl blur-3xl scale-95" />
+            <div className="relative glass-card-elevated p-6 sm:p-8 rounded-2xl">
+              <div className="grid grid-cols-3 gap-4 mb-4">
+                {[
+                  { label: 'Portfolio Value', value: '$142,580', change: '+12.4%' },
+                  { label: 'Risk Score', value: '38/100', change: 'Low Risk' },
+                  { label: 'AI Insights', value: '5 Active', change: 'View All' },
+                ].map(item => (
+                  <div key={item.label} className="bg-muted/30 rounded-xl p-3 sm:p-4 text-left">
+                    <p className="text-[10px] sm:text-xs text-muted-foreground">{item.label}</p>
+                    <p className="text-sm sm:text-lg font-bold text-foreground mt-0.5">{item.value}</p>
+                    <p className="text-[10px] sm:text-xs text-primary font-medium">{item.change}</p>
+                  </div>
+                ))}
               </div>
-
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] tracking-tight text-balance animate-fade-in-up">
-                Take Control of Your{' '}
-                <span className="gradient-text">Finances</span>
-              </h1>
-
-              <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 text-pretty animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-                Track expenses, manage budgets, and gain AI-powered insights into your spending habits. All in one beautiful application.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-2 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-                <Button onClick={onGetStarted} size="lg" className="gap-2 font-semibold hover-lift h-12 px-8">
-                  Start Free <ArrowRight className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" size="lg" className="font-medium hover-lift h-12 px-8" onClick={onGetStarted}>
-                  Try Demo
-                </Button>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-muted/20 rounded-xl p-4 h-32 flex items-center justify-center border border-border/20">
+                  <div className="text-center space-y-1">
+                    <PieChart className="h-8 w-8 text-primary mx-auto opacity-50" />
+                    <p className="text-xs text-muted-foreground">Sector Allocation</p>
+                  </div>
+                </div>
+                <div className="bg-muted/20 rounded-xl p-4 h-32 flex items-center justify-center border border-border/20">
+                  <div className="text-center space-y-1">
+                    <Activity className="h-8 w-8 text-primary mx-auto opacity-50" />
+                    <p className="text-xs text-muted-foreground">Risk Heatmap</p>
+                  </div>
+                </div>
               </div>
-
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 text-xs sm:text-sm text-muted-foreground animate-fade-in" style={{ animationDelay: '300ms' }}>
-                <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-primary" /> No credit card required</span>
-                <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-primary" /> Free forever plan</span>
-                <span className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-primary" /> 256-bit encryption</span>
-              </div>
-            </div>
-
-            <div className="relative hidden lg:block animate-scale-in" style={{ animationDelay: '200ms' }}>
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 rounded-3xl blur-3xl transform scale-95" />
-              <div className="relative animate-float">
-                <img src={heroIllustration} alt="ExpenseTrace Dashboard Preview" className="w-full h-auto rounded-2xl shadow-2xl border border-border/30" />
-              </div>
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/15 rounded-full blur-2xl animate-pulse-soft" />
-              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-accent/40 rounded-full blur-2xl animate-pulse-soft" style={{ animationDelay: '1s' }} />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Problem Section */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-muted/30">
+      {/* Problem */}
+      <section className="py-16 sm:py-24 bg-muted/30">
         <div className="page-container">
           <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-destructive/10 text-destructive text-xs font-semibold uppercase tracking-wider">
-                <AlertTriangle className="h-3.5 w-3.5" />
-                The Problem
+                <Target className="h-3.5 w-3.5" /> The Problem
               </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground leading-tight text-balance">
-                People don't know where their money goes every month
+                Most investors fly blind with their portfolios
               </h2>
               <p className="text-muted-foreground text-base sm:text-lg leading-relaxed">
-                Most people have no idea how much they spend on food, transport, or subscriptions. Without visibility, overspending becomes a habit — and savings become impossible.
+                Retail investors and small traders lack access to institutional-grade portfolio analysis. Without understanding risk, concentration, and sector exposure, poor diversification leads to unnecessary losses.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
               {[
-                { stat: '78%', label: 'of people live paycheck to paycheck' },
-                { stat: '₹15K+', label: 'wasted monthly on untracked expenses' },
-                { stat: '60%', label: "don't know their top spending category" },
-                { stat: '3 in 4', label: 'have no monthly budget plan' },
-              ].map((item) => (
+                { stat: '72%', label: 'of retail investors are over-concentrated in 1-2 sectors' },
+                { stat: '85%', label: "don't know their portfolio's risk score" },
+                { stat: '$4.2K', label: 'average annual loss from poor diversification' },
+                { stat: '91%', label: 'would rebalance if they had better tools' },
+              ].map(item => (
                 <Card key={item.label} className="glass-card p-4 sm:p-5 text-center">
                   <CardContent className="p-0">
                     <p className="text-2xl sm:text-3xl font-bold gradient-text">{item.stat}</p>
@@ -153,25 +166,24 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
         </div>
       </section>
 
-      {/* Solution Section */}
-      <section className="py-16 sm:py-20 lg:py-24">
+      {/* Solution */}
+      <section className="py-16 sm:py-24">
         <div className="page-container text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider">
-            <Target className="h-3.5 w-3.5" />
-            The Solution
+            <Zap className="h-3.5 w-3.5" /> The Solution
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground text-balance max-w-3xl mx-auto">
-            ExpenseTrace helps you track and analyze expenses <span className="gradient-text">effortlessly</span>
+            Institutional-grade portfolio analysis, <span className="gradient-text">powered by AI</span>
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
-            Log expenses in seconds, see exactly where your money goes, and get smart suggestions to save more — all from one clean dashboard.
+            Upload your portfolio and get instant risk analysis, diversification scores, sector breakdowns, and AI-powered recommendations — no finance degree required.
           </p>
           <div className="grid sm:grid-cols-3 gap-5 sm:gap-6 pt-8">
             {[
-              { icon: Eye, title: 'See Everything', desc: 'Visual dashboards show your spending at a glance with category breakdowns.' },
-              { icon: Zap, title: 'Act Faster', desc: 'Smart insights tell you exactly where to cut back and how much you can save.' },
-              { icon: Target, title: 'Hit Goals', desc: 'Budget limits and alerts keep you on track toward your financial goals.' },
-            ].map((s) => (
+              { icon: Activity, title: 'Analyze Risk', desc: 'Risk heatmaps, beta analysis, and volatility estimation for every holding.' },
+              { icon: Brain, title: 'AI Insights', desc: 'Natural language explanations of portfolio health with actionable recommendations.' },
+              { icon: LineChart, title: 'Forecast Growth', desc: 'Monte Carlo simulations showing best, expected, and worst-case scenarios.' },
+            ].map(s => (
               <Card key={s.title} className="glass-card-elevated hover-lift p-6 space-y-4 text-center">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto">
                   <s.icon className="h-6 w-6 text-primary" />
@@ -184,86 +196,26 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-muted/30">
-        <div className="page-container">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4">
-              How It Works
-            </h2>
-            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
-              Get started in three simple steps.
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto">
-            {steps.map((step, i) => (
-              <div key={step.num} className="text-center space-y-4 animate-fade-in-up" style={{ animationDelay: `${i * 120}ms` }}>
-                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto">
-                  <span className="text-2xl font-extrabold gradient-text">{step.num}</span>
-                </div>
-                <h3 className="text-lg font-semibold text-foreground">{step.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Dashboard Preview */}
-      <section className="py-16 sm:py-20 lg:py-24">
-        <div className="page-container">
-          <div className="text-center mb-10 sm:mb-14">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
-              A dashboard built for <span className="gradient-text">clarity</span>
-            </h2>
-            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
-              Everything you need at a glance — expenses, budgets, charts, and insights in one clean view.
-            </p>
-          </div>
-          <div className="relative max-w-4xl mx-auto">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-3xl blur-3xl scale-95" />
-            <div className="relative rounded-2xl overflow-hidden border border-border/40 shadow-2xl">
-              <img src={heroIllustration} alt="ExpenseTrace Dashboard" className="w-full h-auto" />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
-            </div>
-            {/* Floating feature labels */}
-            <div className="hidden lg:flex absolute -left-4 top-1/4 items-center gap-2 px-4 py-2 rounded-xl bg-card border border-border/50 shadow-lg animate-fade-in" style={{ animationDelay: '400ms' }}>
-              <PieChart className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-foreground">Category Charts</span>
-            </div>
-            <div className="hidden lg:flex absolute -right-4 top-1/3 items-center gap-2 px-4 py-2 rounded-xl bg-card border border-border/50 shadow-lg animate-fade-in" style={{ animationDelay: '600ms' }}>
-              <Lightbulb className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-foreground">Smart Insights</span>
-            </div>
-            <div className="hidden lg:flex absolute -left-4 bottom-1/4 items-center gap-2 px-4 py-2 rounded-xl bg-card border border-border/50 shadow-lg animate-fade-in" style={{ animationDelay: '800ms' }}>
-              <Target className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-foreground">Budget Tracking</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-muted/30">
+      {/* Features */}
+      <section className="py-16 sm:py-24 bg-muted/30">
         <div className="page-container">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
-              Everything you need to manage expenses
+              Everything you need for portfolio intelligence
             </h2>
-            <p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Powerful features designed to help you understand and optimize your spending.
+            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
+              Professional-grade tools designed for retail investors and small traders.
             </p>
           </div>
-
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
-            {features.map((feature, index) => (
-              <Card key={feature.title} className="glass-card-elevated hover-lift border-border/40 animate-fade-in-up" style={{ animationDelay: `${index * 60}ms` }}>
-                <CardContent className="p-5 sm:p-6 space-y-3 sm:space-y-4">
-                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+            {features.map((f, i) => (
+              <Card key={f.title} className="glass-card-elevated hover-lift border-border/40 animate-fade-in-up" style={{ animationDelay: `${i * 60}ms` }}>
+                <CardContent className="p-5 sm:p-6 space-y-3">
+                  <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <f.icon className="h-5 w-5 text-primary" />
                   </div>
-                  <h3 className="text-lg sm:text-xl font-semibold text-foreground">{feature.title}</h3>
-                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{feature.description}</p>
+                  <h3 className="text-lg font-semibold text-foreground">{f.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{f.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -271,66 +223,77 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
         </div>
       </section>
 
-      {/* Pricing with Comparison Table */}
-      <section className="py-16 sm:py-20 lg:py-24" id="pricing">
+      {/* Security */}
+      <section className="py-16 sm:py-24">
         <div className="page-container">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
-              Simple, transparent pricing
-            </h2>
-            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
-              Start free and upgrade when you need more. No hidden fees.
-            </p>
+          <div className="glass-card-elevated p-8 sm:p-12 text-center space-y-6 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
+            <div className="relative">
+              <Lock className="h-12 w-12 text-primary mx-auto mb-4 opacity-70" />
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">Bank-Grade Security</h2>
+              <p className="text-muted-foreground max-w-xl mx-auto mb-6">
+                Your portfolio data is encrypted with 256-bit AES encryption. We use SOC 2 compliant infrastructure. Your data is never shared or sold.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
+                {['256-bit Encryption', 'SOC 2 Compliant', 'GDPR Ready', 'Zero Data Sharing'].map(item => (
+                  <span key={item} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted/50 border border-border/30">
+                    <Shield className="h-3.5 w-3.5 text-primary" /> {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section className="py-16 sm:py-24 bg-muted/30" id="pricing">
+        <div className="page-container">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4">Simple, transparent pricing</h2>
+            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">Start free. Upgrade when you need deeper intelligence.</p>
           </div>
 
-          {/* Plan Cards */}
           <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-12">
-            {/* Free Plan */}
-            <Card className="glass-card-elevated p-6 sm:p-8 space-y-6 relative">
+            <Card className="glass-card-elevated p-6 sm:p-8 space-y-6">
               <div>
                 <h3 className="text-xl font-bold text-foreground">Free</h3>
-                <p className="text-muted-foreground text-sm mt-1">Perfect for getting started</p>
+                <p className="text-muted-foreground text-sm mt-1">Get started with portfolio analysis</p>
               </div>
               <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-extrabold text-foreground">₹0</span>
+                <span className="text-4xl font-extrabold text-foreground">$0</span>
                 <span className="text-muted-foreground">/month</span>
               </div>
               <ul className="space-y-2.5 text-sm text-muted-foreground">
-                {['50 transactions/mo', '8 categories', 'Basic analytics', 'Budget alerts', '3 recurring expenses'].map(f => (
+                {['10 holdings', 'Sector allocation', 'Risk scoring', 'Basic analytics', '3 AI insights/day'].map(f => (
                   <li key={f} className="flex items-center gap-2"><Check className="h-4 w-4 text-primary flex-shrink-0" />{f}</li>
                 ))}
               </ul>
-              <Button variant="outline" className="w-full font-semibold h-11" onClick={onGetStarted}>
-                Get Started
-              </Button>
+              <Button variant="outline" className="w-full font-semibold h-11" onClick={onGetStarted}>Get Started</Button>
             </Card>
 
-            {/* Pro Plan */}
             <Card className="glass-card-elevated p-6 sm:p-8 space-y-6 relative border-primary/40 ring-2 ring-primary/20">
-              <div className="absolute -top-3 right-6 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-bold">
-                POPULAR
-              </div>
+              <div className="absolute -top-3 right-6 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-bold">POPULAR</div>
               <div>
                 <h3 className="text-xl font-bold text-foreground">Pro</h3>
-                <p className="text-muted-foreground text-sm mt-1">For serious budgeters</p>
+                <p className="text-muted-foreground text-sm mt-1">Full portfolio intelligence suite</p>
               </div>
               <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-extrabold gradient-text">₹299</span>
+                <span className="text-4xl font-extrabold gradient-text">$29</span>
                 <span className="text-muted-foreground">/month</span>
               </div>
               <ul className="space-y-2.5 text-sm text-foreground">
-                {['Unlimited transactions', 'Custom categories', 'Advanced charts & reports', 'CSV/PDF export', 'Unlimited recurring', 'Smart AI insights', 'Cloud backup & sync'].map(f => (
+                {['Unlimited holdings', 'Risk heatmap', 'AI financial assistant', 'Portfolio forecasting', 'Intelligence reports', 'Real-time market data', 'Priority support'].map(f => (
                   <li key={f} className="flex items-center gap-2"><Check className="h-4 w-4 text-primary flex-shrink-0" />{f}</li>
                 ))}
               </ul>
               <Button className="w-full font-semibold h-11 gap-2" onClick={onGetStarted}>
-                <CreditCard className="h-4 w-4" />
                 Upgrade to Pro
               </Button>
             </Card>
           </div>
 
-          {/* Comparison Table */}
+          {/* Comparison */}
           <div className="max-w-2xl mx-auto">
             <h3 className="text-lg font-semibold text-foreground text-center mb-6">Detailed Comparison</h3>
             <Card className="glass-card-elevated overflow-hidden">
@@ -344,22 +307,18 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {comparisonFeatures.map((f, i) => (
+                    {comparison.map((f, i) => (
                       <tr key={f.name} className={`border-b border-border/20 ${i % 2 === 0 ? 'bg-muted/10' : ''}`}>
                         <td className="p-3 sm:p-4 text-foreground">{f.name}</td>
                         <td className="p-3 sm:p-4 text-center">
                           {typeof f.free === 'boolean' ? (
                             f.free ? <Check className="h-4 w-4 text-primary mx-auto" /> : <X className="h-4 w-4 text-muted-foreground/40 mx-auto" />
-                          ) : (
-                            <span className="text-muted-foreground text-xs font-medium">{f.free}</span>
-                          )}
+                          ) : <span className="text-muted-foreground text-xs font-medium">{f.free}</span>}
                         </td>
                         <td className="p-3 sm:p-4 text-center">
                           {typeof f.pro === 'boolean' ? (
                             f.pro ? <Check className="h-4 w-4 text-primary mx-auto" /> : <X className="h-4 w-4 text-muted-foreground/40 mx-auto" />
-                          ) : (
-                            <span className="font-semibold text-foreground text-xs">{f.pro}</span>
-                          )}
+                          ) : <span className="font-semibold text-foreground text-xs">{f.pro}</span>}
                         </td>
                       </tr>
                     ))}
@@ -372,32 +331,25 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-muted/30">
+      <section className="py-16 sm:py-24">
         <div className="page-container">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
-              Loved by thousands of users
-            </h2>
-            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
-              See what our community says about managing their finances with ExpenseTrace.
-            </p>
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4">Trusted by investors worldwide</h2>
+            <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">See how our AI helps investors make smarter decisions.</p>
           </div>
-
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
-            {testimonials.map((testimonial, index) => (
-              <Card key={testimonial.name} className="glass-card-elevated hover-lift border-border/40 animate-fade-in-up" style={{ animationDelay: `${index * 80}ms` }}>
+            {testimonials.map((t, i) => (
+              <Card key={t.name} className="glass-card-elevated hover-lift animate-fade-in-up" style={{ animationDelay: `${i * 80}ms` }}>
                 <CardContent className="p-5 sm:p-6 space-y-4">
                   <div className="flex gap-0.5">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-primary text-primary" />
+                    {Array.from({ length: 5 }).map((_, j) => (
+                      <Star key={j} className="h-4 w-4 fill-primary text-primary" />
                     ))}
                   </div>
-                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed italic">
-                    "{testimonial.review}"
-                  </p>
+                  <p className="text-sm text-muted-foreground leading-relaxed italic">"{t.review}"</p>
                   <div>
-                    <p className="text-sm font-semibold text-foreground">{testimonial.name}</p>
-                    <p className="text-xs text-muted-foreground">{testimonial.role}</p>
+                    <p className="text-sm font-semibold text-foreground">{t.name}</p>
+                    <p className="text-xs text-muted-foreground">{t.role}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -406,55 +358,22 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
         </div>
       </section>
 
-      {/* Future Features Teaser */}
-      <section className="py-16 sm:py-20 lg:py-24">
-        <div className="page-container text-center space-y-6">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Coming Soon
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            We're building the future of personal finance management.
-          </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-6">
-            {[
-              { icon: FileText, title: 'Receipt Scanner', desc: 'Snap a photo, auto-log expense' },
-              { icon: Users, title: 'Split Expenses', desc: 'Share costs with friends easily' },
-              { icon: Target, title: 'Financial Goals', desc: 'Set and track savings targets' },
-              { icon: Zap, title: 'AI Assistant', desc: 'Personalized spending advisor' },
-            ].map((item) => (
-              <Card key={item.title} className="glass-card p-5 text-center opacity-80">
-                <CardContent className="p-0 space-y-3">
-                  <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center mx-auto">
-                    <item.icon className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                  <h3 className="text-sm font-semibold text-foreground">{item.title}</h3>
-                  <p className="text-xs text-muted-foreground">{item.desc}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-muted/30">
+      {/* CTA */}
+      <section className="py-16 sm:py-24 bg-muted/30">
         <div className="page-container">
-          <Card className="glass-card-elevated overflow-hidden border-border/40">
+          <Card className="glass-card-elevated overflow-hidden">
             <CardContent className="p-8 sm:p-12 lg:p-16 text-center space-y-6 relative">
               <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
               <div className="relative">
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 text-balance">
-                  Ready to take control of your finances?
+                  Ready to invest smarter?
                 </h2>
                 <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-                  Join thousands who track their expenses smarter with ExpenseTrace. Start for free today.
+                  Join thousands of investors using AI to analyze and optimize their portfolios. Start your free analysis today.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <Button onClick={onGetStarted} size="lg" className="gap-2 font-semibold hover-lift h-12 px-8">
-                    Start Free Now <ArrowRight className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="lg" className="font-medium hover-lift h-12 px-8" onClick={onGetStarted}>
-                    Try Demo
+                    Analyze My Portfolio <ArrowRight className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
@@ -467,9 +386,9 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
       <footer className="border-t border-border/40 py-6 sm:py-8 bg-card/50">
         <div className="page-container">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <img src={logo} alt="ExpenseTrace" className="h-7 sm:h-8 w-auto opacity-70" />
+            <img src={logo} alt="PortfolioAI" className="h-7 sm:h-8 w-auto opacity-70" />
             <p className="text-xs sm:text-sm text-muted-foreground text-center sm:text-right">
-              © {new Date().getFullYear()} ExpenseTrace. Your data stays private and secure.
+              © {new Date().getFullYear()} PortfolioAI. Your portfolio data stays private and secure.
             </p>
           </div>
         </div>
