@@ -17,7 +17,9 @@ import { PortfolioReport } from '@/components/PortfolioReport';
 import { BenchmarkComparison } from '@/components/BenchmarkComparison';
 import { useAuth } from '@/hooks/useAuth';
 import { usePortfolio } from '@/hooks/usePortfolio';
+import { useMarketData } from '@/hooks/useMarketData';
 import { toast } from '@/hooks/use-toast';
+import { getMarketData } from '@/types/portfolio';
 
 const Index = () => {
   const [showAuth, setShowAuth] = useState(false);
