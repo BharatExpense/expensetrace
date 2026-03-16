@@ -25,16 +25,11 @@ const Index = () => {
   const [showAuth, setShowAuth] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const { user, isLoading: authLoading, signOut, isAuthenticated } = useAuth();
-  const { holdings, isLoading: portfolioLoading, addHolding, deleteHolding, marketDataMap: simulatedMarketData, analysis: simulatedAnalysis } = usePortfolio();
+  const { holdings, isLoading: portfolioLoading, addHolding, deleteHolding, marketDataMap: simulatedMarketData, analysis } = usePortfolio();
   const { liveData, isLive, isFetching, fetchLiveData } = useMarketData();
 
-  // Merge live data over simulated data
+  // Merge live data over simulated data when available
   const marketDataMap = { ...simulatedMarketData, ...liveData };
-  const analysis = isLive ? (() => {
-    // Recalculate with live data
-    const { analyzePortfolio } = require('@/types/portfolio');
-    return analyzePortfolio(holdings, marketDataMap);
-  })() : simulatedAnalysis;
 
   const handleSignOut = async () => {
     await signOut();
