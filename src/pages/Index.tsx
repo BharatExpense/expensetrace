@@ -74,6 +74,17 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center gap-1 sm:gap-2">
+              {holdings.length > 0 && (
+                <Button
+                  variant={isLive ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => fetchLiveData(holdings.map(h => h.ticker))}
+                  disabled={isFetching}
+                  className="h-8 text-xs hidden sm:flex"
+                >
+                  {isFetching ? 'Loading...' : isLive ? '● Live' : 'Go Live'}
+                </Button>
+              )}
               <ThemeToggle />
               <Button variant="ghost" size="icon" onClick={handleSignOut} className="h-8 w-8 text-muted-foreground hover:text-foreground" title="Sign Out">
                 <LogOut className="h-4 w-4" />
