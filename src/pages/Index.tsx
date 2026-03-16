@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { LogOut, BarChart3, Activity, Brain, TrendingUp, PieChart, Bot, FileText, Briefcase } from 'lucide-react';
+import { LogOut, BarChart3, Activity, Brain, TrendingUp, PieChart, Bot, FileText, Briefcase, GitCompare } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
