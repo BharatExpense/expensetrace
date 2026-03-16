@@ -118,6 +118,10 @@ const Index = () => {
             <RiskHeatmap holdings={holdings} marketDataMap={marketDataMap} analysis={analysis} />
           </TabsContent>
 
+          <TabsContent value="benchmark" className="mt-0 space-y-5">
+            <BenchmarkComparison analysis={analysis} />
+          </TabsContent>
+
           <TabsContent value="insights" className="mt-0 space-y-5">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               <AIInsightsPanel holdings={holdings} analysis={analysis} marketDataMap={marketDataMap} />
