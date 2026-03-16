@@ -86,12 +86,15 @@ const Index = () => {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
-          <TabsList className="grid w-full grid-cols-5 max-w-2xl h-10 sm:h-11 p-1 bg-muted/50">
+          <TabsList className="grid w-full grid-cols-6 max-w-3xl h-10 sm:h-11 p-1 bg-muted/50">
             <TabsTrigger value="overview" className="text-xs sm:text-sm font-medium gap-1.5">
               <Briefcase className="h-3.5 w-3.5 hidden sm:block" /> Portfolio
             </TabsTrigger>
             <TabsTrigger value="risk" className="text-xs sm:text-sm font-medium gap-1.5">
               <Activity className="h-3.5 w-3.5 hidden sm:block" /> Risk
+            </TabsTrigger>
+            <TabsTrigger value="benchmark" className="text-xs sm:text-sm font-medium gap-1.5">
+              <GitCompare className="h-3.5 w-3.5 hidden sm:block" /> Compare
             </TabsTrigger>
             <TabsTrigger value="insights" className="text-xs sm:text-sm font-medium gap-1.5">
               <Brain className="h-3.5 w-3.5 hidden sm:block" /> Insights
