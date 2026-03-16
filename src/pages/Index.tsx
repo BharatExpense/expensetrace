@@ -144,9 +144,9 @@ const Index = () => {
         <div className="flex items-center justify-around py-2 px-2">
           <MobileNavItem icon={Briefcase} label="Portfolio" active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} />
           <MobileNavItem icon={Activity} label="Risk" active={activeTab === 'risk'} onClick={() => setActiveTab('risk')} />
+          <MobileNavItem icon={GitCompare} label="Compare" active={activeTab === 'benchmark'} onClick={() => setActiveTab('benchmark')} />
           <MobileNavItem icon={Brain} label="Insights" active={activeTab === 'insights'} onClick={() => setActiveTab('insights')} />
           <MobileNavItem icon={TrendingUp} label="Forecast" active={activeTab === 'forecast'} onClick={() => setActiveTab('forecast')} />
-          <MobileNavItem icon={FileText} label="Reports" active={activeTab === 'reports'} onClick={() => setActiveTab('reports')} />
         </div>
       </nav>
 
