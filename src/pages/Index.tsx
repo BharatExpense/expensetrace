@@ -14,6 +14,7 @@ import { AIInsightsPanel } from '@/components/AIInsightsPanel';
 import { PortfolioForecast } from '@/components/PortfolioForecast';
 import { AIChat } from '@/components/AIChat';
 import { PortfolioReport } from '@/components/PortfolioReport';
+import { BenchmarkComparison } from '@/components/BenchmarkComparison';
 import { useAuth } from '@/hooks/useAuth';
 import { usePortfolio } from '@/hooks/usePortfolio';
 import { toast } from '@/hooks/use-toast';
