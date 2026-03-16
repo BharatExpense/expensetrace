@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { LogOut, BarChart3, Activity, Brain, TrendingUp, PieChart, Bot, FileText, Briefcase } from 'lucide-react';
+import { LogOut, BarChart3, Activity, Brain, TrendingUp, PieChart, Bot, FileText, Briefcase, GitCompare } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -14,15 +14,22 @@ import { AIInsightsPanel } from '@/components/AIInsightsPanel';
 import { PortfolioForecast } from '@/components/PortfolioForecast';
 import { AIChat } from '@/components/AIChat';
 import { PortfolioReport } from '@/components/PortfolioReport';
+import { BenchmarkComparison } from '@/components/BenchmarkComparison';
 import { useAuth } from '@/hooks/useAuth';
 import { usePortfolio } from '@/hooks/usePortfolio';
+import { useMarketData } from '@/hooks/useMarketData';
 import { toast } from '@/hooks/use-toast';
+import { getMarketData } from '@/types/portfolio';
 
 const Index = () => {
   const [showAuth, setShowAuth] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const { user, isLoading: authLoading, signOut, isAuthenticated } = useAuth();
-  const { holdings, isLoading: portfolioLoading, addHolding, deleteHolding, marketDataMap, analysis } = usePortfolio();
+  const { holdings, isLoading: portfolioLoading, addHolding, deleteHolding, marketDataMap: simulatedMarketData, analysis } = usePortfolio();
+  const { liveData, isLive, isFetching, fetchLiveData } = useMarketData();
+
+  // Merge live data over simulated data when available
+  const marketDataMap = { ...simulatedMarketData, ...liveData };
 
   const handleSignOut = async () => {
     await signOut();
@@ -67,6 +74,17 @@ const Index = () => {
               </div>
             </div>
             <div className="flex items-center gap-1 sm:gap-2">
+              {holdings.length > 0 && (
+                <Button
+                  variant={isLive ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => fetchLiveData(holdings.map(h => h.ticker))}
+                  disabled={isFetching}
+                  className="h-8 text-xs hidden sm:flex"
+                >
+                  {isFetching ? 'Loading...' : isLive ? '● Live' : 'Go Live'}
+                </Button>
+              )}
               <ThemeToggle />
               <Button variant="ghost" size="icon" onClick={handleSignOut} className="h-8 w-8 text-muted-foreground hover:text-foreground" title="Sign Out">
                 <LogOut className="h-4 w-4" />
@@ -85,12 +103,15 @@ const Index = () => {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
-          <TabsList className="grid w-full grid-cols-5 max-w-2xl h-10 sm:h-11 p-1 bg-muted/50">
+          <TabsList className="grid w-full grid-cols-6 max-w-3xl h-10 sm:h-11 p-1 bg-muted/50">
             <TabsTrigger value="overview" className="text-xs sm:text-sm font-medium gap-1.5">
               <Briefcase className="h-3.5 w-3.5 hidden sm:block" /> Portfolio
             </TabsTrigger>
             <TabsTrigger value="risk" className="text-xs sm:text-sm font-medium gap-1.5">
               <Activity className="h-3.5 w-3.5 hidden sm:block" /> Risk
+            </TabsTrigger>
+            <TabsTrigger value="benchmark" className="text-xs sm:text-sm font-medium gap-1.5">
+              <GitCompare className="h-3.5 w-3.5 hidden sm:block" /> Compare
             </TabsTrigger>
             <TabsTrigger value="insights" className="text-xs sm:text-sm font-medium gap-1.5">
               <Brain className="h-3.5 w-3.5 hidden sm:block" /> Insights
@@ -112,6 +133,10 @@ const Index = () => {
 
           <TabsContent value="risk" className="mt-0 space-y-5">
             <RiskHeatmap holdings={holdings} marketDataMap={marketDataMap} analysis={analysis} />
+          </TabsContent>
+
+          <TabsContent value="benchmark" className="mt-0 space-y-5">
+            <BenchmarkComparison analysis={analysis} />
           </TabsContent>
 
           <TabsContent value="insights" className="mt-0 space-y-5">
@@ -136,9 +161,9 @@ const Index = () => {
         <div className="flex items-center justify-around py-2 px-2">
           <MobileNavItem icon={Briefcase} label="Portfolio" active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} />
           <MobileNavItem icon={Activity} label="Risk" active={activeTab === 'risk'} onClick={() => setActiveTab('risk')} />
+          <MobileNavItem icon={GitCompare} label="Compare" active={activeTab === 'benchmark'} onClick={() => setActiveTab('benchmark')} />
           <MobileNavItem icon={Brain} label="Insights" active={activeTab === 'insights'} onClick={() => setActiveTab('insights')} />
           <MobileNavItem icon={TrendingUp} label="Forecast" active={activeTab === 'forecast'} onClick={() => setActiveTab('forecast')} />
-          <MobileNavItem icon={FileText} label="Reports" active={activeTab === 'reports'} onClick={() => setActiveTab('reports')} />
         </div>
       </nav>
 
