@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Trash2, Filter, Pencil } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -22,8 +22,9 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Expense, ExpenseCategory, EXPENSE_CATEGORIES, getCategoryInfo } from '@/types/expense';
 import { useCurrency } from '@/contexts/CurrencyContext';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, isAfter, isBefore, startOfDay, endOfDay } from 'date-fns';
 import { ExpenseEditDialog } from './ExpenseEditDialog';
+import { ExpenseSearchBar, ExpenseFilters } from './ExpenseSearchBar';
 
 interface ExpenseListProps {
   expenses: Expense[];
@@ -33,11 +34,47 @@ interface ExpenseListProps {
 
 export const ExpenseList = ({ expenses, onDelete, onEdit }: ExpenseListProps) => {
   const [filterCategory, setFilterCategory] = useState<ExpenseCategory | 'all'>('all');
+  const [filters, setFilters] = useState<ExpenseFilters>({ searchText: '' });
   const { formatAmount } = useCurrency();
 
-  const filteredExpenses = filterCategory === 'all' 
-    ? expenses 
-    : expenses.filter(e => e.category === filterCategory);
+  const filteredExpenses = useMemo(() => {
+    let result = expenses;
+
+    // Category filter
+    if (filterCategory !== 'all') {
+      result = result.filter(e => e.category === filterCategory);
+    }
+
+    // Text search
+    if (filters.searchText.trim()) {
+      const q = filters.searchText.toLowerCase();
+      result = result.filter(e =>
+        (e.description?.toLowerCase().includes(q)) ||
+        e.category.toLowerCase().includes(q) ||
+        e.amount.toString().includes(q)
+      );
+    }
+
+    // Date range
+    if (filters.dateFrom) {
+      const from = startOfDay(filters.dateFrom);
+      result = result.filter(e => !isBefore(parseISO(e.date), from));
+    }
+    if (filters.dateTo) {
+      const to = endOfDay(filters.dateTo);
+      result = result.filter(e => !isAfter(parseISO(e.date), to));
+    }
+
+    // Amount range
+    if (filters.amountMin !== undefined) {
+      result = result.filter(e => e.amount >= filters.amountMin!);
+    }
+    if (filters.amountMax !== undefined) {
+      result = result.filter(e => e.amount <= filters.amountMax!);
+    }
+
+    return result;
+  }, [expenses, filterCategory, filters]);
 
   if (expenses.length === 0) {
     return (
@@ -51,11 +88,14 @@ export const ExpenseList = ({ expenses, onDelete, onEdit }: ExpenseListProps) =>
 
   return (
     <div className="space-y-4 sm:space-y-5">
-      {/* Filter */}
+      {/* Search Bar */}
+      <ExpenseSearchBar filters={filters} onChange={setFilters} />
+
+      {/* Category Filter */}
       <div className="flex flex-wrap items-center gap-2 sm:gap-3">
         <div className="flex items-center gap-2 text-muted-foreground">
           <Filter className="h-4 w-4" />
-          <span className="text-xs sm:text-sm font-medium">Filter:</span>
+          <span className="text-xs sm:text-sm font-medium">Category:</span>
         </div>
         <Select 
           value={filterCategory} 
@@ -76,11 +116,9 @@ export const ExpenseList = ({ expenses, onDelete, onEdit }: ExpenseListProps) =>
             ))}
           </SelectContent>
         </Select>
-        {filterCategory !== 'all' && (
-          <span className="text-xs sm:text-sm text-muted-foreground bg-muted px-2 py-1 rounded-md">
-            {filteredExpenses.length} expense{filteredExpenses.length !== 1 ? 's' : ''}
-          </span>
-        )}
+        <span className="text-xs sm:text-sm text-muted-foreground bg-muted px-2 py-1 rounded-md">
+          {filteredExpenses.length} result{filteredExpenses.length !== 1 ? 's' : ''}
+        </span>
       </div>
 
       {/* Expense Items */}
@@ -95,7 +133,6 @@ export const ExpenseList = ({ expenses, onDelete, onEdit }: ExpenseListProps) =>
               style={{ animationDelay: `${index * 30}ms` }}
             >
               <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
-                {/* Category Icon */}
                 <div 
                   className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center text-xl sm:text-2xl flex-shrink-0"
                   style={{ backgroundColor: `${categoryInfo.color}12` }}
@@ -103,7 +140,6 @@ export const ExpenseList = ({ expenses, onDelete, onEdit }: ExpenseListProps) =>
                   {categoryInfo.emoji}
                 </div>
                 
-                {/* Details */}
                 <div className="space-y-0.5 sm:space-y-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                     <Badge 
@@ -129,12 +165,10 @@ export const ExpenseList = ({ expenses, onDelete, onEdit }: ExpenseListProps) =>
               </div>
 
               <div className="flex items-center gap-1 sm:gap-2 ml-2">
-                {/* Amount */}
                 <span className="text-base sm:text-lg font-bold text-foreground tabular-nums mr-1 sm:mr-2">
                   {formatAmount(expense.amount)}
                 </span>
 
-                {/* Edit Button */}
                 <ExpenseEditDialog
                   expense={expense}
                   onEdit={onEdit}
@@ -149,7 +183,6 @@ export const ExpenseList = ({ expenses, onDelete, onEdit }: ExpenseListProps) =>
                   }
                 />
 
-                {/* Delete Button */}
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button
@@ -187,7 +220,8 @@ export const ExpenseList = ({ expenses, onDelete, onEdit }: ExpenseListProps) =>
       {filteredExpenses.length === 0 && expenses.length > 0 && (
         <div className="text-center py-8 sm:py-12">
           <div className="text-4xl mb-3">🔍</div>
-          <p className="text-sm text-muted-foreground">No expenses in this category</p>
+          <p className="text-sm text-muted-foreground">No matching transactions found</p>
+          <p className="text-xs text-muted-foreground mt-1">Try adjusting your search or filters</p>
         </div>
       )}
     </div>
