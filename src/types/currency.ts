@@ -1,4 +1,4 @@
-export type Currency = 'USD' | 'EUR' | 'INR' | 'GBP' | 'JPY' | 'CAD' | 'AUD' | 'CHF' | 'CNY' | 'SGD' | 'HKD' | 'KRW' | 'MXN' | 'BRL' | 'ZAR' | 'SEK' | 'NOK' | 'DKK' | 'NZD' | 'AED';
+export type Currency = 'USD' | 'EUR' | 'INR' | 'GBP' | 'JPY' | 'CAD' | 'AUD' | 'CHF' | 'CNY' | 'SGD' | 'HKD' | 'KRW' | 'MXN' | 'BRL' | 'ZAR' | 'SEK' | 'NOK' | 'DKK' | 'NZD' | 'AED' | 'BDT';
 
 export interface CurrencyInfo {
   code: Currency;
