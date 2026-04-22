@@ -28,9 +28,10 @@ export const CURRENCIES: CurrencyInfo[] = [
   { code: 'DKK', symbol: 'kr', name: 'Danish Krone', locale: 'da-DK' },
   { code: 'NZD', symbol: 'NZ$', name: 'New Zealand Dollar', locale: 'en-NZ' },
   { code: 'AED', symbol: 'د.إ', name: 'UAE Dirham', locale: 'ar-AE' },
+  { code: 'BDT', symbol: '৳', name: 'Bangladeshi Taka', locale: 'bn-BD' },
 ];
 
-// Fixed exchange rates (relative to USD)
+// Fallback exchange rates (relative to USD) — used if live API fetch fails
 export const EXCHANGE_RATES: Record<Currency, number> = {
   USD: 1,
   EUR: 0.92,
@@ -52,6 +53,7 @@ export const EXCHANGE_RATES: Record<Currency, number> = {
   DKK: 6.87,
   NZD: 1.63,
   AED: 3.67,
+  BDT: 110.50,
 };
 
 export const getCurrencyInfo = (code: Currency): CurrencyInfo => {
