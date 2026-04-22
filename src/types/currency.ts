@@ -69,13 +69,15 @@ export const formatCurrency = (amount: number, currency: Currency): string => {
 };
 
 export const convertCurrency = (
-  amount: number, 
-  fromCurrency: Currency, 
-  toCurrency: Currency
+  amount: number,
+  fromCurrency: Currency,
+  toCurrency: Currency,
+  rates: Record<Currency, number> = EXCHANGE_RATES
 ): number => {
   if (fromCurrency === toCurrency) return amount;
-  
+  const fromRate = rates[fromCurrency] ?? EXCHANGE_RATES[fromCurrency];
+  const toRate = rates[toCurrency] ?? EXCHANGE_RATES[toCurrency];
   // Convert to USD first, then to target currency
-  const amountInUSD = amount / EXCHANGE_RATES[fromCurrency];
-  return amountInUSD * EXCHANGE_RATES[toCurrency];
+  const amountInUSD = amount / fromRate;
+  return amountInUSD * toRate;
 };
